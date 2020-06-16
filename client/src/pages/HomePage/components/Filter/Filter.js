@@ -11,7 +11,12 @@ const shoesManufacturerNumber = shoesManufacturer;
 
 class Filter extends React.Component {
   state = {
-    shoesModelsFiltered: []
+    shoesManufacturerFiltered: [],
+    shoesModelsFiltered: [],
+    colourBlack: false,
+    colourWhite: false,
+    colourBlue: false,
+    colourRed: false
   }
 
   handleChosenProducers = (selectedArray) => {    
@@ -32,13 +37,33 @@ class Filter extends React.Component {
     }
     
     this.setState({
+      shoesManufacturerFiltered: selectedProducers,
       shoesModelsFiltered: shoesModelsFiltered
     })
+  }
+
+  handleChosenColour = e => {
+    const target = e.target;
+    console.log(`Colour ${target.name} is chosen`, target.checked);     //delete
+    const name = target.name;
+    this.setState({
+      [name]: target.checked
+    })
+  }
+
+  handleStateStatus = e => {
+    console.log('Status of the Black colour in the State: ', this.state.colourBlack);
+    console.log('Status of the White colour in the State: ', this.state.colourWhite);
+    console.log('Status of the Red colour in the State: ', this.state.colourRed);
+    console.log('Status of the Blue colour in the State: ', this.state.colourBlue);
+    console.log('Status of shoesManufacturerFiltered', this.state.shoesManufacturerFiltered);
+    console.log('Status of shoesModelsFiltered', this.state.shoesModelsFiltered);
   }
 
   render() {
     return (
       <div className="filter">
+        
         <section className="filter__by-manufacturer">
           <Select 
             placeholder='Select Brand'
@@ -62,20 +87,30 @@ class Filter extends React.Component {
             onChange={this.handleChosenModels}
           />
         </section>
-        <section>
-          <div>
-            <input type="checkbox" id="black" name="Black" checked />
-            <label for="black">Black</label>
-          </div>
-          <div>
-            <input type="checkbox" id="white" name="White" checked />
-            <label for="white">White</label>
-          </div>
-          <div>
-            <input type="checkbox" id="red" name="red" checked />
-            <label for="red">Red</label>
-          </div>
+        <section className='filter__by-colour'>
+          <legeds>Choose your colour</legeds>  
+            <div>
+              <input type="checkbox" id="black" name="colourBlack" value={this.state.colourBlack} onChange={this.handleChosenColour} />
+              <label for="black">Black</label>
+            </div>
+            <div>
+              <input type="checkbox" id="white" name="colourWhite" value={this.state.colourWhite} onChange={this.handleChosenColour} />
+              <label for="white">White</label>
+            </div>
+            <div>
+              <input type="checkbox" id="red" name="colourRed" value={this.state.colourRed} onChange={this.handleChosenColour} />
+              <label for="red">Red</label>
+            </div>
+            <div>
+              <input type="checkbox" id="blue" name="colourBlue"  value={this.state.colourBlue} onChange={this.handleChosenColour} />
+              <label for="blue">Blue</label>
+            </div>
         </section>
+        <section className="delete-after">
+          
+          <button className="check-button" type="button" onClick={this.handleStateStatus}>State status</button>
+        </section>
+      
       </div>
     )
   }
