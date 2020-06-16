@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'Avenir';
+    src: url('../assets/_Global-Font/AvenirNextProLT/Linotype-AvenirNextLTPro-Regular.otf'); //LinotypeAvenirNextLTProRegular.otf
+}
+
+@font-face {
+    font-family: 'Avenir bold';
+    src: url('../assets/_Global-Font/AvenirNextProLT/Linotype-AvenirNextLTPro-Bold.otf');    //LinotypeAvenirNextLTProBold.otf
+}
+
+@font-face {
+    font-family: 'Avenir demi';
+    src: url('../assets/_Global-Font/AvenirNextProLT/Linotype-AvenirNextLTPro-Demi.otf');     //LinotypeAvenirNextLTProDemi.otf
+}
+
+html {
+    font-size: 16px;
+    font-family: 'Avenir';
+    color: #323232;
+}
+
+@mixin text-author-mobile {
+  font-family: 'Avenir demi';
+  font-size: 1.1rem;
+}
+
+@mixin text-dates-mobile {
+  font-family: 'Avenir';
+  font-size: 0.85rem;
+  color: #AFAFAF;
+}
+
+@mixin text-input-mobile {
+  font-family: 'Avenir';
+  font-size: 0.8rem;
+  border-radius: 0.25rem;
+  padding: 1rem;
+}

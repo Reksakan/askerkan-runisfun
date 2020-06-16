@@ -1,0 +1,113 @@
+@import './variables.scss'; 
+
+@mixin mobile {
+    @media screen and (min-width: $mobile-breakpoit) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media screen and (min-width: $tablet-breakpoint) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media screen and (min-width: $desktop-breakpoint) {
+        @content; 
+    }
+}
+
+@mixin flex-col{
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+@mixin flex-relative {
+    display: flex;
+    position: relative;
+}
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin margins-mobile {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+@mixin margins-tablet {
+  margin-right: 1.5rem;
+  margin-left: 1.5rem;
+}
+
+@mixin margins-desktop {
+  margin-right: 11.25rem;
+  margin-left: 11.25rem;
+}
+
+@mixin button-mobile {
+  width: 13.875rem;
+  height: 3rem;
+  border-radius: 0.25rem;
+  color: #ffffff; 
+  background-color: #0095FF;
+}
+
+@mixin button-tablet {
+  width: 10rem;
+  height: 3rem;
+  border-radius: 0.25rem;
+  color: #ffffff; 
+  background-color: #0095FF;
+}
+
+@mixin button-mobile-upload {
+  font-family: 'Avenir';
+  height: 3rem;
+  background-color: #0095FF;
+  color: white;
+  border-radius: 0.25rem;
+}
+
+@mixin avatar-mobile {
+  background-color: silver;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.5rem;
+  background-image: url("../assets/Images/Mohan-muruge.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+@mixin avatar-mobile1 {
+  background-color: silver;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.5rem;
+}
+
+/* +++ TEXT STYLES +++ */
+
+@mixin text__title-input {
+  font-family: 'Avenir';
+  font-size: 0.8rem;
+  color: #AFAFAF;
+}
+
+@mixin text__title {
+  font-family: 'Avenir';
+  font-size: 0.8rem;
+}

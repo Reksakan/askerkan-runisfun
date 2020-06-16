@@ -1,5 +1,36 @@
+@import '../../../../partials/mixins.scss';
+// @import '../../../../partials/fonts.scss'; 
+// @import '../../../../partials/variables.scss';
 
+.header { 
 
-.header {
-  border: 1px solid black;
+  &__logo {
+    height: 5rem;
+  }  
+
+  &__navbar {
+    border: 1px solid blue;
+    @include flex-row;
+    margin-left: 5rem;
+    height: 100%;
+    align-items: center;
+  }
+
+  &__navbar a {
+    text-decoration: none;
+  }
+
+  &__sections {
+    border: 1px solid red;
+    text-align: center;
+    margin-right: 2rem;
+    width: 4rem;
+  }
+}  
+.button-colour {
+  background-color: orange;
+}
+
+.user-colour {
+  background-color: orange;
 }
