@@ -3,9 +3,12 @@
 // @import '../../../../partials/variables.scss';
 
 .header { 
-
+  
   &__logo {
-    height: 5rem;
+    height: 6rem;
+    margin-top: -1rem;
+    /* border: 2px solid brown; */
+    
   }  
 
   &__navbar {
@@ -33,4 +36,32 @@
 
 .user-colour {
   background-color: orange;
+}
+
+.color-set {
+  background-color: rgba($color: #f4991a, $alpha: 1.0);
+}
+
+.color-text {
+  font-size: 1.2rem;
+  color: #321313;
+  font-weight: bold;
+  margin-right: 1.5rem;
+  &:hover {
+    color:brown;
+  }
+}
+
+.mr-put {
+  height: 3rem;
+  margin-left: 3rem;
+  margin-top: 3rem;
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2.8rem;
+  margin-right: 0rem;
+  margin-left: auto;
 }

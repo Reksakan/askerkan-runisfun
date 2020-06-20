@@ -1,7 +1,7 @@
 const shoesManufacturer = [
-  {value: 'AD', label: 'Adidas'},
-  {value: 'NI', label: 'Nike'},
-  {value: 'SA', label: 'Salomon'},
+  {value: 'adidas', label: 'adidas'},
+  {value: 'nike', label: 'nike'},
+  {value: 'salomon', label: 'salomon'},
 ];
 
 export default shoesManufacturer; 

@@ -1,31 +1,80 @@
 
 .filter {
-  border: 1px solid red;
+  // border: 1px solid red;
   width: 25rem;
 }
 
-.check-button {
-   border: 0;
-    line-height: 2.5;
-    padding: 0 20px;
-    font-size: 1rem;
-    text-align: center;
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-    border-radius: 10px;
-    background-color: rgba(220, 0, 0, 1);
-    background-image: linear-gradient(to top left,
-                                      rgba(0, 0, 0, .2),
-                                      rgba(0, 0, 0, .2) 30%,
-                                      rgba(0, 0, 0, 0));
-    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
-                inset -2px -2px 3px rgba(0, 0, 0, .6);
-  &:hover {
-    background-color: rgba(255, 0, 0, 1);
+// .check-button {
+//    border: 0;
+//     line-height: 2.5;
+//     padding: 0 20px;
+//     font-size: 1rem;
+//     text-align: center;
+//     color: #fff;
+//     text-shadow: 1px 1px 1px #000;
+//     border-radius: 10px;
+//     background-color: rgba(220, 0, 0, 1);
+//     background-image: linear-gradient(to top left,
+//                                       rgba(0, 0, 0, .2),
+//                                       rgba(0, 0, 0, .2) 30%,
+//                                       rgba(0, 0, 0, 0));
+//     box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+//                 inset -2px -2px 3px rgba(0, 0, 0, .6);
+//   &:hover {
+//     background-color: rgba(255, 0, 0, 1);
+//   }
+//   &:active {
+//     box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+//                 inset 2px 2px 3px rgba(0, 0, 0, .6);
+//   }
+//               }
+
+.filter{
+  &__by-type {
+    margin-top: 4rem;
   }
-  &:active {
-    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
-                inset 2px 2px 3px rgba(0, 0, 0, .6);
+  &__by-model {
+    margin-top: 4rem;
   }
-              }
+}
+
+label {
+  margin-left: 0.3rem;
+}
+
+.by-colour {
+  &__filter {
+    border: 1px solid red;
+    display: flex;
+    align-items: flex-start;
+    flex-flow: column wrap;
+    width: 15rem;
+    height: 5rem;
+  }
+  &__header {
+    font-size: 1.2rem;
+  }
+  &__colour {
+    border: 1px solid blue;
+    width: 7rem;
+  }
+}
+
+.by-size {
+  &__filter {
+    border: 1px solid red;
+    display: flex;
+    align-items: flex-start;
+    flex-flow: column wrap;
+    width: 15rem;
+    height: 13rem;
+  }
+  &__header {
+    font-size: 1.2rem;
+  }
+  &__size {
+    border: 1px solid blue;
+    width: 7rem;
+  }
+}
 
