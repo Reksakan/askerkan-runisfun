@@ -1,6 +1,7 @@
 import React from 'react';
-import Select from 'react-select'; //как работает API. Как выставлять значение по default. Передавать его в объекте или какой-то строкой. 
+import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import qs from 'qs';
 import './Filter.scss';
 import shoesManufacturers from './dataShoesManufacturer';
 import shoesModels from './dataShoesModels';
@@ -8,7 +9,7 @@ import shoesCategories from './dataShoesCategories';
 import shoesColours from './dataShoesColours';
 import shoesSizes from './dataShoesSizes';
 import { withRouter } from "react-router";
-import qs from 'qs';
+
 
 
 
@@ -32,6 +33,29 @@ class Filter extends React.Component {
     shoesSizesFiltered: []
   }
   
+  clearAllFilters = (e) => {
+    this.setState({
+      shoesManufacturersFiltered: [],
+      shoesCategoriesFiltered: [],
+      shoesModelsFiltered: []
+    })
+  }  
+  //Doesn't work properly
+   handleByTyping = (e) => {
+     const searchParameter = e.target.value.trim();
+     let filtered = []
+     const filteredShoe = shoesModels.filter(shoe => {
+       if (shoe.label.toLowerCase().includes(searchParameter)) {return shoe}})
+        .map(shoe => shoe.label)
+        .map(function(item) {return {'value': item, 'label':item}});
+     
+     if (filteredShoe.length < shoesModels.length - 2) {
+      this.setState({ 
+        shoesModelsFiltered: filteredShoe
+      })
+     }  
+   } 
+  
   handleChosenProducers = (e) => {
     let shoesManufacturersFiltered=[];
     if(e !== null) {shoesManufacturersFiltered = e}
@@ -52,51 +76,45 @@ class Filter extends React.Component {
     let shoesModelsFiltered = [];
     if(e !== null) {shoesModelsFiltered = e}
     // else {shoesModelsFiltered = e.map(element => element.label)};
-    // // console.log('shoesModelsFiltered', shoesModelsFiltered);
+    //console.log('shoesModelsFiltered: ', shoesModelsFiltered);
     this.setState({shoesModelsFiltered: shoesModelsFiltered});
     this.populateURL();
   } 
 
   handleChosenColour = (e) => {
-    console.log('colour - e', e)
-    console.log('e.target.value: ', e.target.value);
-    console.log('e.target: ', e.target);
-    console.log('e.target.checked: ', e.target.checked);
-    
     let shoesColoursFiltered = this.state.shoesColoursFiltered;
     shoesColoursFiltered.forEach(colour => {if (colour.colour === e.target.value) colour.isChecked = e.target.checked});
     this.setState({shoesColoursFiltered: shoesColoursFiltered});
-    console.log(this.state.shoesColoursFiltered);
+    //console.log(this.state.shoesColoursFiltered);
     this.populateURL();
   }
 
   populateURL = () => {
-    let finalURLManufacturers = '';
-    let finalURLCategories = '';
-    let finalURLModels = '';
-    let finalURLColours = '';
-    
-    if (this.state.shoesManufacturersFiltered.length > 0) {this.state.shoesManufacturersFiltered.forEach(brand => finalURLManufacturers += `${brand.value}%`)}; //foreEach можно заменить на reduce. Пропадет необходимость использовать let. 
-    if (this.state.shoesCategoriesFiltered.length > 0) {this.state.shoesCategoriesFiltered.forEach(category => finalURLCategories += `${category.value}%`)};
-    if (this.state.shoesModelsFiltered.length > 0) {this.state.shoesModelsFiltered.forEach(model => finalURLModels += `${model.label}%`)};
-    
-    let count =0;
-    this.state.shoesColoursFiltered.forEach(colour => {if (colour.isChecked === true) {count += 1}});
-    console.log('count', count);
-    if (count > 0) {this.state.shoesColoursFiltered.forEach(colour => {if (colour.isChecked === true) {finalURLColours += `${colour.colour}%`} })};
+    const finalURLManufacturers = this.state.shoesManufacturersFiltered.map(brand => brand.value);
+    const finalURLCategories = this.state.shoesCategoriesFiltered.map(category => category.value);
+    const finalURLModels = this.state.shoesModelsFiltered.map(model => model.value);
+    const finalURLColours = this.state.shoesColoursFiltered.filter(colour => colour.isChecked === true).map(colour => colour.colour);
+    //console.log('finalURLModels to Populate to URL', finalURLModels);
+    //console.log('shoesModelsFiltered to Populate to URL', this.state.shoesModelsFiltered)
+
+    const URLParams = {}; 
+    if(finalURLManufacturers.length > 0) {URLParams.producer = finalURLManufacturers}
+    if(finalURLCategories.length > 0) {URLParams.categories = finalURLCategories}
+    if(finalURLModels.length > 0) {URLParams.name = finalURLModels}
+    if(finalURLColours.length > 0) {URLParams.colour = finalURLColours}
     
     // console.log('finalURLManufacturers', finalURLManufacturers);                                      //delete
     // console.log('finalURLCategories', finalURLCategories);                                            //delete
     
-    this.props.history.push(`?producer=${finalURLManufacturers}`.slice(0, -1) //как поставить условие, если "=", чтобы не удалялся. Или удалять только %
-    .concat(`&categories=${finalURLCategories}`.slice(0, -1))
-    .concat(`&name=${finalURLModels}`.slice(0, -1))
-    .concat(`&colour=${finalURLColours}`.slice(0, -1)));
+    const str = qs.stringify(URLParams, { addQueryPrefix: true, arrayFormat: 'comma', encode: false });
+    //console.log('str:  ---',str);
+    this.props.history.push(str);
   }
-
+//Filter by size will be realized in Stage II
   colourList() {
-    // console.log('shoesColours', shoesColours);
-    const colourVariances = shoesColours.map(colour => {
+    const shoesByColours = this.state.shoesColoursFiltered
+    // console.log('shoesColours in colourList(): ', shoesByColours);
+    const colourVariances = shoesByColours.map(colour => {
       return (
         <div className="by-colour__colour">
           <input 
@@ -104,6 +122,7 @@ class Filter extends React.Component {
             id={colour.id} 
             name={colour.colour} 
             value={colour.colour}
+            isChecked = {colour.isChecked}
             onChange={this.handleChosenColour} 
             key={colour.id}
           />
@@ -114,6 +133,7 @@ class Filter extends React.Component {
     return colourVariances;
   }
 
+  //Filter by size will be realized in Stage II
   sizeList() {
     // console.log('shoesSizes', shoesSizes);
     const sizeVariances = shoesSizes.map(size => {
@@ -134,12 +154,11 @@ class Filter extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState){
-    
     if(prevState.shoesManufacturersFiltered !== this.state.shoesManufacturersFiltered 
       || prevState.shoesCategoriesFiltered !== this.state.shoesCategoriesFiltered
       || prevState.shoesModelsFiltered !== this.state.shoesModelsFiltered) {
       this.populateURL();
-      
+      //this.handleByTyping();
       let shoesModelsPrevFiltered = [];
       let shoesModelsPostFiltered = [];
       let manufacturers = [];
@@ -174,38 +193,39 @@ class Filter extends React.Component {
     }
   }
 
-  componentDidMount(prevProps, prevState){
+  componentDidMount(){
     // let modelsToFilter = [];
     // if((this.state.shoesManufacturersFiltered === undefined || this.state.shoesManufacturersFiltered.length === 0) //Do I need to check this condition? 
     //   && ((this.state.shoesCategoriesFiltered === undefined || this.state.shoesCategoriesFiltered.length === 0)))   //Do I need to check this condition? Cause by default 
     //   {modelsToFilter = shoesModels};
       // console.log('modelsToFilter in componentDidMount: ', modelsToFilter);                                //delete
       
-      console.log('componentDidMount: this.props.location.search', this.props.location.search);
-      const URL = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
-      const arrProducers = URL.producer === undefined ? [] : URL.producer.split('%');
-      const arrCategories = URL.categories === undefined ? [] : URL.categories.split('%');
-      const arrModels = URL.name === undefined ? [] : URL.name.split('%');
-      console.log('URL.colour: ', URL.colour);                                                      //DELETE!!!!!
-      const arrColours = URL.colour === undefined ? '' : URL.colour.split('%');
-      console.log('arrColours: ', arrColours);                                                    //DELETE!!!!!
+      // console.log('componentDidMount: this.props.location.search', this.props.location.search);
+      const URL = qs.parse(this.props.location.search, { comma: true, ignoreQueryPrefix: true });
+      console.log('URL after refresh: ', URL)
+      const arrProducers = URL.producer === undefined ? [] : Array.isArray(URL.producer) ? URL.producer : [URL.producer];
+      const arrCategories = URL.categories === undefined ? [] : Array.isArray(URL.categories) ? URL.categories : [URL.categories]; 
+      const arrModels = URL.name === undefined ? [] : Array.isArray(URL.name) ? URL.name : [URL.name];
+      // console.log('URL.colour: ', URL.colour);                                                      //DELETE!!!!!
+      const arrColours = URL.colour === undefined ? [] : Array.isArray(URL.colour) ? URL.colour : [URL.colour];
+      //const arrSizes = URL.size === undefined ? [] : Array.isArray(URL.size) ? URL.size : [URL.size];
+      //console.log('arrColours: ', arrColours);                                                    //DELETE!!!!!
       
       let defaultValueProducers = [];
       if (arrProducers.length !== 0) {defaultValueProducers = arrProducers.map(function(item) {return {'value': item, 'label': item}})};
-      //const defaultValueCategories = arrCategories.length !== 0 ? arrCategories.map(function(item) {return {'value': item, 'label': item}}) : 0;
+      
       let defaultValueCategories = [];
       if(arrCategories.length !== 0) {defaultValueCategories = arrCategories.map(function(item) {return {'value': item, 'label': item}})};
+      
       let defaultValueModels = [];
       if(arrModels.length !==0) {defaultValueModels = arrModels.map(function(item) {return {'value': item, 'label': item}})};
 
-      let defaultColours = [];
       let defaultValueColours = this.state.shoesColoursFiltered;
-      if(arrColours.length !==0) {defaultValueColours.forEach(element => {
-        if (arrColours.includes(element.colour)) {element.isChecked=true}
+      if(arrColours.length !== 0) {defaultValueColours.forEach(element => {
+        if (arrColours.includes(element.colour)) {element.isChecked = true}
       })};
       
-      // (colour => arrColours.includes(colour.colour))}
-      console.log('defaultValueColours(before): ', defaultValueColours);
+      //console.log('defaultValueColours(before): ', defaultValueColours);
 
       // defaultValueColours.forEach(colour => colour.isChecked = true)
       // console.log('defaultValueColours(after): ', defaultValueColours);
@@ -216,14 +236,19 @@ class Filter extends React.Component {
         shoesModelsFiltered: defaultValueModels,
         shoesColoursFiltered: defaultValueColours
       });
+      // console.log('this.state.shoesColoursFiltered in componentDidMount',  this.state.shoesColoursFiltered)
+      this.colourList()
   }
 
   render() {
     
     return (
       <div className="filter">
-        
         <section className="filter__by-manufacturer">
+        <button type="button" value="clear" onClick={this.clearAllFilters}>Clear Filters</button>
+        <p className="search__header">Search by typing</p>
+        <input className="search__input" type="text" name="search" placeholder="Enter text" onChange={this.handleByTyping}></input>
+          
           <div>Brand Name</div>
             <Select 
               placeholder='All Brands'
@@ -259,12 +284,12 @@ class Filter extends React.Component {
               onChange={this.handleChosenModels}
             />
         </section>
-        <h1 className="by-colour__header">Choose your colour</h1>
+        <div className="by-colour__header">Choose your colour</div>
         {/* Свернуть до .map; подвязать с URL (чтобы выставлять состояния) , array.includes/contains - проверка состояния кнопки или check Shadow don*/}
         <section className='by-colour__filter'>    
           {this.colourList()} 
         </section>
-        <h1 className="by-size__header">Choose your size</h1>
+        <div className="by-size__header">Choose your size</div>
         <section className='by-size__filter'>    
           {this.sizeList()} 
         </section>
@@ -275,7 +300,3 @@ class Filter extends React.Component {
 }
 
 export default withRouter(Filter); 
-
-
-//Questions:
-//1. How to keep filters after the page is reloaded

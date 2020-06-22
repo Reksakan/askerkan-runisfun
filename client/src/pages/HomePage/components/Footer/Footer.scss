@@ -1,0 +1,18 @@
+// @import '../../../../partials/variables.scss';
+// @import '../../../../partials/mixins.scss';
+// @import '../../../../partials/fonts.scss'; 
+
+.ground {
+
+  margin-left: 0;
+  margin-right: 0;
+  &__head {
+    border: 1px solid red;
+    display: flex;
+    background-color: #f4991a;
+  }
+  &__contact {
+    border: 1px solid red;
+    
+  }
+}

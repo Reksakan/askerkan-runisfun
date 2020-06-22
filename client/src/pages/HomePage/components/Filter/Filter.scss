@@ -1,7 +1,7 @@
 
 .filter {
-  // border: 1px solid red;
-  width: 25rem;
+  border: 1px solid red;
+  width: 15rem;
 }
 
 // .check-button {
@@ -52,7 +52,8 @@ label {
     height: 5rem;
   }
   &__header {
-    font-size: 1.2rem;
+    margin-top: 2rem;
+    font-size: 1rem;
   }
   &__colour {
     border: 1px solid blue;
@@ -70,7 +71,8 @@ label {
     height: 13rem;
   }
   &__header {
-    font-size: 1.2rem;
+    margin-top: 1rem;
+    font-size: 1rem;
   }
   &__size {
     border: 1px solid blue;
@@ -78,3 +80,15 @@ label {
   }
 }
 
+.search {
+  &__header {
+    margin-bottom: 0;
+  }
+  &__input {
+    margin-bottom: 1rem;
+    width: 15rem;
+    height: 2rem;
+    border-radius: 0.3rem;
+    border: 1px solid silver;
+  }
+}
