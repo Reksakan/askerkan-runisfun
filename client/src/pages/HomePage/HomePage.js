@@ -124,6 +124,7 @@ class HomePage extends React.Component {
   listOfShoes() {
     const shoesList = this.state.shoesFiltered.map(shoe => {
       return <Card 
+      className="card-container"
       id = {shoe.id}
       key = {shoe.id}
       name={shoe.name}
@@ -138,21 +139,13 @@ class HomePage extends React.Component {
   }
   
   render() {
-    // console.log ('this.state.shoes from state from RENDER: ', this.state.shoes);                            //DELETE
-    // console.log('this.state.shoes.xxx', this.state.shoes.id)                                    //DELETE
-    // console.log('this.state.urlInitShoes: ', this.state.urlInitShoes);                          //DELETE
-    // console.log('this.state.urlInitGender: ', this.state.urlInitGender);                        //DELETE
     return (
       <>
-        
         <div className="body">
           <Filter />
           <div className="body__shoes">
             {this.listOfShoes()}
           </div>
-          
-          
-          
         </div>
       </>
     )

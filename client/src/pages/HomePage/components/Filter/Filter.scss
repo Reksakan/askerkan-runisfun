@@ -1,41 +1,21 @@
-
-.filter {
-  border: 1px solid red;
-  width: 15rem;
-}
-
-// .check-button {
-//    border: 0;
-//     line-height: 2.5;
-//     padding: 0 20px;
-//     font-size: 1rem;
-//     text-align: center;
-//     color: #fff;
-//     text-shadow: 1px 1px 1px #000;
-//     border-radius: 10px;
-//     background-color: rgba(220, 0, 0, 1);
-//     background-image: linear-gradient(to top left,
-//                                       rgba(0, 0, 0, .2),
-//                                       rgba(0, 0, 0, .2) 30%,
-//                                       rgba(0, 0, 0, 0));
-//     box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
-//                 inset -2px -2px 3px rgba(0, 0, 0, .6);
-//   &:hover {
-//     background-color: rgba(255, 0, 0, 1);
-//   }
-//   &:active {
-//     box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
-//                 inset 2px 2px 3px rgba(0, 0, 0, .6);
-//   }
-//               }
+@import '../../../../partials/mixins.scss';
+// @import '../../../../partials/fonts.scss'; 
+// @import '../../../../partials/variables.scss';
 
 .filter{
-  &__by-type {
-    margin-top: 4rem;
+  margin-top: 7rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  @include tablet {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
   }
-  &__by-model {
-    margin-top: 4rem;
-  }
+
+
+ @include tablet {
+   width: 20rem;
+   margin-top: 0.5rem;
+ }
 }
 
 label {
@@ -43,52 +23,93 @@ label {
 }
 
 .by-colour {
-  &__filter {
-    border: 1px solid red;
-    display: flex;
-    align-items: flex-start;
-    flex-flow: column wrap;
-    width: 15rem;
-    height: 5rem;
-  }
   &__header {
     margin-top: 2rem;
     font-size: 1rem;
   }
+  &__filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 5rem;
+    @include tablet {
+      width: 15rem;
+      height: 5rem;
+    }
+  }
   &__colour {
-    border: 1px solid blue;
     width: 7rem;
   }
+}
+.by-colour__colour {
+  width: 50%;
 }
 
 .by-size {
   &__filter {
-    border: 1px solid red;
     display: flex;
     align-items: flex-start;
     flex-flow: column wrap;
-    width: 15rem;
+    width: 100%;
     height: 13rem;
+    @include tablet {
+      width: 15rem;
+      
+    }
+    
   }
   &__header {
     margin-top: 1rem;
     font-size: 1rem;
   }
   &__size {
-    border: 1px solid blue;
     width: 7rem;
   }
 }
 
-.search {
+.by-size__size {
+  width: 50%;
+}
+
+.search-by {
+  display: flex;
+  flex-direction: column;
+  
+  &__button {
+    background-color: #f3ead1;
+    border-radius: 0.5rem;
+    width: 50%;
+    height: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    @include tablet {
+      width: 100%;
+      margin: 0;
+    }
+  &:hover {
+    background-color: #f4991a;
+  }
+  }
   &__header {
+    margin-top:1rem;
     margin-bottom: 0;
   }
   &__input {
     margin-bottom: 1rem;
-    width: 15rem;
-    height: 2rem;
+    width: 100%;
+    height: 2.5rem;
     border-radius: 0.3rem;
     border: 1px solid silver;
+    @include tablet {
+      width: 15rem;
+      height: 2rem;
+    }
   }
+}
+
+.filter-headers {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  font-weight: 500;
 }

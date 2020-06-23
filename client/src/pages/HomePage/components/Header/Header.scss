@@ -1,6 +1,4 @@
 @import '../../../../partials/mixins.scss';
-// @import '../../../../partials/fonts.scss'; 
-// @import '../../../../partials/variables.scss';
 
 .header { 
   position: fixed;
@@ -14,25 +12,21 @@
   }
   
   &__right {
-    border: 1px solid blue;
-    margin-top: 3rem;
+    
     margin-right: 3rem;
     margin-left: auto;
   }
 
   &__basket {
-    border: 1px solid red;
     width: 2rem;
     margin-right: 1.5rem;
   }
 
   &__sign-in {
-    border: 1px solid green;
     width: 2rem;
   }
 
   &__navbar {
-    border: 1px solid blue;
     @include flex-row;
     margin-left: 5rem;
     height: 100%;

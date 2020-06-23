@@ -243,13 +243,18 @@ class Filter extends React.Component {
   render() {
     
     return (
-      <div className="filter">
-        <section className="filter__by-manufacturer">
-        <button type="button" value="clear" onClick={this.clearAllFilters}>Clear Filters</button>
-        <p className="search__header">Search by typing</p>
-        <input className="search__input" type="text" name="search" placeholder="Enter text" onChange={this.handleByTyping}></input>
-          
-          <div>Brand Name</div>
+      <aside className="filter">
+        <section className="search-by">
+          <button className="search-by__button" type="button" value="clear" onClick={this.clearAllFilters}>Clear Filters</button>
+          <p className="search-by__header filter-headers">Search by shoes model</p>
+          <span className="search-by__input-section">
+            <input className="search-by__input" type="text" name="search" placeholder="Enter text" onChange={this.handleByTyping}></input>
+            <span onclick="var input = this.previousSibling; input.value = ''; input.focus();"></span>
+          </span>
+            
+        </section>  
+        <section className="filter-by">
+          <div className="filter-headers">Brand Name
             <Select 
               placeholder='All Brands'
               closeMenuOnSelect={false} //убрать
@@ -259,9 +264,10 @@ class Filter extends React.Component {
               onChange = {this.handleChosenProducers}
               options={shoesManufacturers} //убрать. будет своя собственная отрисовка. 
             />
+          </div>  
         </section>
         <section className="filter__by-type">
-          <div>Type of shoes</div>
+          <div className="filter-headers">Type of shoes
             <Select 
               placeholder='All types'
               closeMenuOnSelect={false}
@@ -271,30 +277,32 @@ class Filter extends React.Component {
               options={shoesCategories}
               onChange={this.handleChosenCategories}
             />
+          </div>
         </section>
         <section className="filter__by-model">
-          <div>Model of shoes</div>
+          <div className="filter-headers">Model of shoes
             <Select 
               placeholder='All Models'
               closeMenuOnSelect={false}
               components={animatedComponents}
-              value={this.state.shoesModelsFiltered} //defaulutValueModels 
+              value={this.state.shoesModelsFiltered}
               isMulti
-              options={this.state.shoesModelsToFilter} //shoesModelsFiltered
+              options={this.state.shoesModelsToFilter} 
               onChange={this.handleChosenModels}
             />
+          </div>  
         </section>
-        <div className="by-colour__header">Choose your colour</div>
-        {/* Свернуть до .map; подвязать с URL (чтобы выставлять состояния) , array.includes/contains - проверка состояния кнопки или check Shadow don*/}
+        
+        <div className="by-colour__header filter-headers">Choose your colour</div>
         <section className='by-colour__filter'>    
           {this.colourList()} 
         </section>
-        <div className="by-size__header">Choose your size</div>
+        <div className="by-size__header filter-headers">Choose your size</div>
         <section className='by-size__filter'>    
           {this.sizeList()} 
         </section>
       
-      </div>
+      </aside>
     )
   }
 }

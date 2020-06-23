@@ -28,7 +28,6 @@
 }
 
 .description {
-  border: 1px solid blue;
   display: flex;
   flex-direction: column;
 
@@ -46,7 +45,6 @@
     }
   }
   &__text {
-    border: 1px solid blue;
     margin-bottom: 0rem;
     text-align: center;
   }
