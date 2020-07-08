@@ -257,12 +257,12 @@ class Filter extends React.Component {
           <div className="filter-headers">Brand Name
             <Select 
               placeholder='All Brands'
-              closeMenuOnSelect={false} //убрать
-              components={animatedComponents} //убрать
+              closeMenuOnSelect={false} 
+              components={animatedComponents} 
               value={this.state.shoesManufacturersFiltered} //сюда надо забить URL defaulutValueProducers
               isMulti
               onChange = {this.handleChosenProducers}
-              options={shoesManufacturers} //убрать. будет своя собственная отрисовка. 
+              options={shoesManufacturers} 
             />
           </div>  
         </section>

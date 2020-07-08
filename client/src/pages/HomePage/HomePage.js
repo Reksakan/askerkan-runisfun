@@ -109,13 +109,15 @@ class HomePage extends React.Component {
     })
   }
   
-  addShoe=(id)=>{
+  addShoe=(e)=>{
+    e.preventDefault();
+    console.log(`This shoe ${e.target.value} was chosen (e.target.value)`);
+    const id = e.target.value;
     axios
     .post(`${API_URL}/basket/${id}`)
     // .then(response => {
     //   this.setState({
     //     shoesInitial: response.data
-    //     // shoesFiltered: response.data
     //   })
     // })
     .catch(error => {window.alert(error)})

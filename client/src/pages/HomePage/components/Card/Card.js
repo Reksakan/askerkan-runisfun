@@ -13,7 +13,7 @@ class Card extends React.Component {
           <p className="description__text">{this.props.producer}<span> ({this.props.category})</span></p>
           <p className="description__text">{this.props.name}</p>
           <p className="description__text bold">{this.props.price}</p>
-          <button className="description__button" type="button" value="button" onClick={this.addShoe}>Add to Basket</button>
+          <button className="description__button" type="button" value={this.props.id} onClick={this.props.callAdd}>Add to Basket</button>
         </div>
       </div>
     )

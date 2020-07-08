@@ -13,8 +13,9 @@
 
 
  @include tablet {
-   width: 20rem;
-   margin-top: 0.5rem;
+  max-width: 15rem; 
+  min-width: 15rem;
+  margin-top: 0.5rem;
  }
 }
 
