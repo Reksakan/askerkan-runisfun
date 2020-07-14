@@ -111,17 +111,14 @@ class HomePage extends React.Component {
   
   addShoe=(e)=>{
     e.preventDefault();
-    console.log(`This shoe ${e.target.value} was chosen (e.target.value)`);
-    const id = e.target.value;
+    const itemToBuy = {"id": e.target.value};
+    console.log('Record view: ', itemToBuy);
+    console.log('type of itemToBuy', typeof(itemToBuy));
     axios
-    .post(`${API_URL}/basket/${id}`)
-    // .then(response => {
-    //   this.setState({
-    //     shoesInitial: response.data
-    //   })
-    // })
-    .catch(error => {window.alert(error)})
+      .post(`${API_URL}/basket/`, itemToBuy)
+      .catch(error => {window.alert(error)})
   }
+
 
   listOfShoes() {
     const shoesList = this.state.shoesFiltered.map(shoe => {

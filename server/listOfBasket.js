@@ -12,7 +12,6 @@ router.get('/', (request, response) => {
 
 
 router.post('/', (request, response) => {
-  
   const newBasket = request.body; 
   console.log('newBasket which will be added:', newBasket);
   //Here can put 'if' statement if any check is needed
