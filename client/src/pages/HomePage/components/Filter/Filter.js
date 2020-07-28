@@ -24,22 +24,21 @@ class Filter extends React.Component {
     shoesCategoriesFiltered: [],
     shoesModelsToFilter: [],
     shoesModelsFiltered: [],
-    shoesColoursFiltered: [
-      {id: '1', colour: 'white', isChecked: 'false'},
-      {id: '2', colour: 'black', isChecked: 'false'},
-      {id: '3', colour: 'red', isChecked: 'false'},
-      {id: '4', colour: 'blue', isChecked: 'false'}
-    ],
-    shoesSizesFiltered: []
+    shoesColoursFiltered: shoesColours,
+    shoesSizesFiltered: shoesSizes
   }
   
   clearAllFilters = (e) => {
     this.setState({
       shoesManufacturersFiltered: [],
       shoesCategoriesFiltered: [],
-      shoesModelsFiltered: []
+      shoesModelsFiltered: [],
+      shoesColoursFiltered: shoesColours,
+      shoesSizesFiltered: shoesSizes
     })
+    this.populateURL();
   }  
+
   //Doesn't work properly
    handleByTyping = (e) => {
      const searchParameter = e.target.value.trim();
@@ -82,18 +81,34 @@ class Filter extends React.Component {
   } 
 
   handleChosenColour = (e) => {
+    // console.log('e(Colour): ', e);
+    // console.log('e.target', e.target);
+    // console.log('e.target.value', e.target.value);
+    // console.log('e.target.checked: ', e.target.checked);
     let shoesColoursFiltered = this.state.shoesColoursFiltered;
     shoesColoursFiltered.forEach(colour => {if (colour.colour === e.target.value) colour.isChecked = e.target.checked});
     this.setState({shoesColoursFiltered: shoesColoursFiltered});
-    //console.log(this.state.shoesColoursFiltered);
+    console.log('Colors in State (shoesColoursFiltered): ', this.state.shoesColoursFiltered);
     this.populateURL();
+    // this.colourList();
   }
+
+  handleChosenSizes = (e) => {
+    // console.log('e.target.checked: ', e.target.checked);
+    let shoesSizesFiltered = this.state.shoesSizesFiltered;
+    shoesSizesFiltered.forEach(size => {if(size.size === e.target.value) size.isChecked = e.target.checked})
+    this.setState({shoesSizesFiltered: shoesSizesFiltered});
+    this.populateURL();
+    
+  }
+  
 
   populateURL = () => {
     const finalURLManufacturers = this.state.shoesManufacturersFiltered.map(brand => brand.value);
     const finalURLCategories = this.state.shoesCategoriesFiltered.map(category => category.value);
     const finalURLModels = this.state.shoesModelsFiltered.map(model => model.value);
     const finalURLColours = this.state.shoesColoursFiltered.filter(colour => colour.isChecked === true).map(colour => colour.colour);
+    const finalURLSizes = this.state.shoesSizesFiltered.filter(size => size.isChecked === true).map(size => size.size);
     //console.log('finalURLModels to Populate to URL', finalURLModels);
     //console.log('shoesModelsFiltered to Populate to URL', this.state.shoesModelsFiltered)
 
@@ -102,14 +117,17 @@ class Filter extends React.Component {
     if(finalURLCategories.length > 0) {URLParams.categories = finalURLCategories}
     if(finalURLModels.length > 0) {URLParams.name = finalURLModels}
     if(finalURLColours.length > 0) {URLParams.colour = finalURLColours}
-    
+    if(finalURLSizes.length > 0) {URLParams.size = finalURLSizes}
     // console.log('finalURLManufacturers', finalURLManufacturers);                                      //delete
     // console.log('finalURLCategories', finalURLCategories);                                            //delete
-    
+    // console.log('finalURLColours', finalURLColours);                                                     //delete
+    // console.log('finalURLSizes', finalURLSizes);                                                         //delete
     const str = qs.stringify(URLParams, { addQueryPrefix: true, arrayFormat: 'comma', encode: false });
-    //console.log('str:  ---',str);
     this.props.history.push(str);
   }
+
+
+
 //Filter by size will be realized in Stage II
   colourList() {
     const shoesByColours = this.state.shoesColoursFiltered
@@ -120,9 +138,8 @@ class Filter extends React.Component {
           <input 
             type="checkbox" 
             id={colour.id} 
-            name={colour.colour} 
             value={colour.colour}
-            isChecked = {colour.isChecked}
+            checked = {colour.isChecked === true ? true : false}   //checked = {colour.isChecked == true ? true : false}
             onChange={this.handleChosenColour} 
             key={colour.id}
           />
@@ -142,8 +159,9 @@ class Filter extends React.Component {
           <input 
             type="checkbox" 
             id={size.id} 
-            name={size.size} 
-            // onChange={this.handleChosenColour} 
+            value={size.size} 
+            checked = {size.isChecked === true ? true : false}
+            onChange={this.handleChosenSizes} 
             key={size.id}
           />
           <label>{size.size}</label>
@@ -156,25 +174,28 @@ class Filter extends React.Component {
   componentDidUpdate(prevProps, prevState){
     if(prevState.shoesManufacturersFiltered !== this.state.shoesManufacturersFiltered 
       || prevState.shoesCategoriesFiltered !== this.state.shoesCategoriesFiltered
-      || prevState.shoesModelsFiltered !== this.state.shoesModelsFiltered) {
+      || prevState.shoesModelsFiltered !== this.state.shoesModelsFiltered 
+      || prevState.shoesColoursFiltered !== this.state.shoesColoursFiltered
+    ) {
       this.populateURL();
-      //this.handleByTyping();
       let shoesModelsPrevFiltered = [];
       let shoesModelsPostFiltered = [];
       let manufacturers = [];
       let categories =[];
+      // let colours = [];
+      // let sizes = [];
       
       //If похожи. поэтому можно вынести в отедельную ф-цию.
-      if(this.state.shoesManufacturersFiltered !== undefined 
+      if (this.state.shoesManufacturersFiltered !== undefined 
         && this.state.shoesManufacturersFiltered.length !== null) 
         {manufacturers = this.state.shoesManufacturersFiltered.map(item => item.value)} 
 
-      if(this.state.shoesCategoriesFiltered !== undefined 
+      if (this.state.shoesCategoriesFiltered !== undefined 
         && this.state.shoesCategoriesFiltered.length !== null) 
         {categories = this.state.shoesCategoriesFiltered.map(item => item.value)} 
-
-        // console.log('manufacturers', manufacturers);
-        // console.log('categories', categories);
+      
+        // colours = this.state.shoesColoursFiltered;
+        // console.log('colours: ', colours);
 
         shoesModelsPrevFiltered = shoesModels.filter(shoe => (
         (manufacturers.length == 0 || manufacturers.includes(shoe.company)) 
@@ -202,14 +223,15 @@ class Filter extends React.Component {
       
       // console.log('componentDidMount: this.props.location.search', this.props.location.search);
       const URL = qs.parse(this.props.location.search, { comma: true, ignoreQueryPrefix: true });
-      console.log('URL after refresh: ', URL)
+      // console.log('URL after refresh: ', URL)
       const arrProducers = URL.producer === undefined ? [] : Array.isArray(URL.producer) ? URL.producer : [URL.producer];
       const arrCategories = URL.categories === undefined ? [] : Array.isArray(URL.categories) ? URL.categories : [URL.categories]; 
       const arrModels = URL.name === undefined ? [] : Array.isArray(URL.name) ? URL.name : [URL.name];
       // console.log('URL.colour: ', URL.colour);                                                      //DELETE!!!!!
       const arrColours = URL.colour === undefined ? [] : Array.isArray(URL.colour) ? URL.colour : [URL.colour];
-      //const arrSizes = URL.size === undefined ? [] : Array.isArray(URL.size) ? URL.size : [URL.size];
-      //console.log('arrColours: ', arrColours);                                                    //DELETE!!!!!
+      console.log('arrColours after page refresh: ', arrColours);                                                    //DELETE!!!!!
+      const arrSizes = URL.size === undefined ? [] : Array.isArray(URL.size) ? URL.size : [URL.size];
+      
       
       let defaultValueProducers = [];
       if (arrProducers.length !== 0) {defaultValueProducers = arrProducers.map(function(item) {return {'value': item, 'label': item}})};
@@ -224,20 +246,23 @@ class Filter extends React.Component {
       if(arrColours.length !== 0) {defaultValueColours.forEach(element => {
         if (arrColours.includes(element.colour)) {element.isChecked = true}
       })};
-      
-      //console.log('defaultValueColours(before): ', defaultValueColours);
 
-      // defaultValueColours.forEach(colour => colour.isChecked = true)
-      // console.log('defaultValueColours(after): ', defaultValueColours);
+      // console.log('defaultValueColours: ', defaultValueColours)
+
+      let defaultValueSizes = this.state.shoesSizesFiltered;
+      if(arrSizes.length !== 0) {defaultValueSizes.forEach(element => {
+        if (arrSizes.includes(element.size)) {element.isChecked = true}
+      })};
 
       this.setState({
         shoesManufacturersFiltered: defaultValueProducers,
         shoesCategoriesFiltered: defaultValueCategories,
         shoesModelsFiltered: defaultValueModels,
-        shoesColoursFiltered: defaultValueColours
+        shoesColoursFiltered: defaultValueColours,
+        shoesSizesFiltered: defaultValueSizes
       });
       // console.log('this.state.shoesColoursFiltered in componentDidMount',  this.state.shoesColoursFiltered)
-      this.colourList()
+      this.colourList();
   }
 
   render() {
@@ -259,7 +284,7 @@ class Filter extends React.Component {
               placeholder='All Brands'
               closeMenuOnSelect={false} 
               components={animatedComponents} 
-              value={this.state.shoesManufacturersFiltered} //сюда надо забить URL defaulutValueProducers
+              value={this.state.shoesManufacturersFiltered} 
               isMulti
               onChange = {this.handleChosenProducers}
               options={shoesManufacturers} 
