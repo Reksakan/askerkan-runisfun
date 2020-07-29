@@ -132,7 +132,8 @@ class HomePage extends React.Component {
       price = {shoe.price}
       picture = {shoe.picture}
       link = {shoe.link}
-      callAdd = {this.addShoe}/>
+      callAdd = {this.addShoe}
+      shoeTypes = {shoe.types}/>
     })
     return shoesList;
   }

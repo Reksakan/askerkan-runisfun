@@ -29,14 +29,19 @@ class Filter extends React.Component {
   }
   
   clearAllFilters = (e) => {
+    let shoesColoursFiltered = this.state.shoesColoursFiltered;
+    shoesColoursFiltered.forEach(colour => colour.isChecked = false);
+    let shoesSizesFiltered = this.state.shoesSizesFiltered;
+    shoesSizesFiltered.forEach(size => size.isChecked = false);
     this.setState({
       shoesManufacturersFiltered: [],
       shoesCategoriesFiltered: [],
       shoesModelsFiltered: [],
-      shoesColoursFiltered: shoesColours,
+      shoesColoursFiltered: shoesColoursFiltered,
       shoesSizesFiltered: shoesSizes
     })
     this.populateURL();
+    console.log('this.state.shoesColoursFiltered (from clearAllFilters): ', this.state.shoesColoursFiltered)
   }  
 
   //Doesn't work properly

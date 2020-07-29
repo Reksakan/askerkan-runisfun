@@ -1,5 +1,6 @@
 import React from 'react';
 import './Card.scss';
+import CardColour from '../CardColour/CardColour';
 
 
 class Card extends React.Component {
@@ -13,6 +14,7 @@ class Card extends React.Component {
           <p className="description__text">{this.props.producer}<span> ({this.props.category})</span></p>
           <p className="description__text">{this.props.name}</p>
           <p className="description__text bold">{this.props.price}</p>
+          <CardColour shoeVariances={this.props.shoeTypes}/>
           <button className="description__button" type="button" value={this.props.id} onClick={this.props.callAdd}>Add to Basket</button>
         </div>
       </div>

@@ -1,0 +1,38 @@
+.colours__list {
+  display: flex;
+  justify-content: center;
+}
+
+.black {
+  background-color: black;
+  margin: 0.1rem 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+}
+
+
+.white {
+  background-color: white;
+  border: 1px solid black;
+  margin: 0.1rem 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+}
+
+.blue {
+  background-color: blue;
+  margin: 0.1rem 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+}
+
+.red {
+  background-color: red;
+  margin: 0.1rem 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+}
