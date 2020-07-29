@@ -82,36 +82,9 @@
   border-radius: 0.25rem;
 }
 
-@mixin avatar-mobile {
-  background-color: silver;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1.5rem;
-  background-image: url("../assets/Images/Mohan-muruge.jpg");
-  background-position: center;
-  background-size: cover;
-}
-
-@mixin avatar-mobile1 {
-  background-color: silver;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1.5rem;
-}
-
-/* +++ TEXT STYLES +++ */
-
-@mixin text__title-input {
-  font-family: 'Avenir';
-  font-size: 0.8rem;
-  color: #AFAFAF;
-}
-
-@mixin text__title {
-  font-family: 'Avenir';
-  font-size: 0.8rem;
-}
-
-@mixin border-blue {
-  border: 1px solid blue;
+@mixin colour-circles {
+  margin: 0.1rem 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
 }

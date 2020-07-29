@@ -15,12 +15,10 @@ router.post('/', (request, response) => {
   const newBasket = request.body; 
   console.log('newBasket which will be added:', newBasket);
   //Here can put 'if' statement if any check is needed
-  if (newBasket  
-  /*    && newBasket.name
+  if (newBasket.name
     && newBasket.producer
     && newBasket.price
-    && newBasket.link
-    && newBasket.types.idInt */) {
+    && newBasket.link) {
       const newDataOfBasket = [...dataOfBasket, newBasket];
       fs.writeFile(basketDataFile, JSON.stringify(newDataOfBasket), () => {
         return response.status(201).json(newDataOfBasket);
