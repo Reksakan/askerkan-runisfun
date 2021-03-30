@@ -3,10 +3,18 @@
 @import '../../../../partials/fonts'; 
 
 .product {
+  padding-top: 0;
   @include tablet {
     @include flex-row;
+
     &__img {
-      width: 50rem;
+      width: 40rem;
     }
+  }
+  &__img-box {
+    border: 1px solid white;
+  }
+  &__details {
+    border: 1px solid white
   }
 }

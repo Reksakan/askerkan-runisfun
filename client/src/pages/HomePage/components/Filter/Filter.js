@@ -320,15 +320,15 @@ class Filter extends React.Component {
             />
           </div>  
         </section>
-        
-        <div className="by-colour__header filter-headers">Choose your colour</div>
+      
+        {/* <div className="by-colour__header filter-headers">Choose your colour</div>
         <section className='by-colour__filter'>    
           {this.colourList()} 
         </section>
         <div className="by-size__header filter-headers">Choose your size</div>
         <section className='by-size__filter'>    
           {this.sizeList()} 
-        </section>
+        </section> */}
       
       </aside>
     )
