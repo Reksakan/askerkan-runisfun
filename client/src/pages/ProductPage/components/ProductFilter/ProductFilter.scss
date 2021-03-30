@@ -1,0 +1,26 @@
+@import '../../../../partials/variables';
+@import '../../../../partials/mixins';
+@import '../../../../partials/fonts';
+
+.filter-by {
+  &__gender {
+    border: 1px solid blue;
+    width: 20rem;
+  }
+  &__button-product {
+  background-color: #f3ead1;
+  border-radius: 0.5rem;
+  width: 50%;
+  height: 2.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  @include tablet {
+    width: 100%;
+    margin: 0;
+  }
+&:hover {
+  background-color: #f4991a;
+}
+}
+}
+

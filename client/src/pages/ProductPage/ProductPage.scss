@@ -1,0 +1,20 @@
+@import '../../partials/variables';
+@import '../../partials/mixins';
+@import '../../partials/fonts'; 
+
+// .center {
+//   @include tablet {
+//     padding-top: $padding-top;
+//   }
+// }
+
+.product {
+  @include flex-col;
+  @include tablet {
+    @include flex-row;
+    border: 1px solid red;
+    padding-top: $padding-top;
+    margin-left: 2rem;
+  }
+}
+

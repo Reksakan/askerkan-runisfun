@@ -41,13 +41,13 @@ class Filter extends React.Component {
       shoesSizesFiltered: shoesSizes
     })
     this.populateURL();
-    console.log('this.state.shoesColoursFiltered (from clearAllFilters): ', this.state.shoesColoursFiltered)
+    // console.log('this.state.shoesColoursFiltered (from clearAllFilters): ', this.state.shoesColoursFiltered)
   }  
 
   //Doesn't work properly
    handleByTyping = (e) => {
      const searchParameter = e.target.value.trim();
-     let filtered = []
+     //console.log('e which is entered: ', e);
      const filteredShoe = shoesModels.filter(shoe => {
        if (shoe.label.toLowerCase().includes(searchParameter)) {return shoe}})
         .map(shoe => shoe.label)
@@ -62,8 +62,8 @@ class Filter extends React.Component {
   
   handleChosenProducers = (e) => {
     let shoesManufacturersFiltered=[];
-    if(e !== null) {shoesManufacturersFiltered = e}
-    // console.log('handleChosenProducts e: ', e);
+    if(e !== null) {shoesManufacturersFiltered = e};
+    console.log('handleChosenProducts e: ', e);                                                             //delete
     this.setState({shoesManufacturersFiltered: shoesManufacturersFiltered});
     this.populateURL();
   } 
@@ -110,6 +110,7 @@ class Filter extends React.Component {
 
   populateURL = () => {
     const finalURLManufacturers = this.state.shoesManufacturersFiltered.map(brand => brand.value);
+    console.log('finalURLManufacturers: ', finalURLManufacturers);                                                  //delete
     const finalURLCategories = this.state.shoesCategoriesFiltered.map(category => category.value);
     const finalURLModels = this.state.shoesModelsFiltered.map(model => model.value);
     const finalURLColours = this.state.shoesColoursFiltered.filter(colour => colour.isChecked === true).map(colour => colour.colour);
@@ -123,12 +124,10 @@ class Filter extends React.Component {
     if(finalURLModels.length > 0) {URLParams.name = finalURLModels}
     if(finalURLColours.length > 0) {URLParams.colour = finalURLColours}
     if(finalURLSizes.length > 0) {URLParams.size = finalURLSizes}
-    // console.log('finalURLManufacturers', finalURLManufacturers);                                      //delete
-    // console.log('finalURLCategories', finalURLCategories);                                            //delete
-    // console.log('finalURLColours', finalURLColours);                                                     //delete
-    // console.log('finalURLSizes', finalURLSizes);                                                         //delete
-    const str = qs.stringify(URLParams, { addQueryPrefix: true, arrayFormat: 'comma', encode: false });
+    const str = qs.stringify(URLParams, { addQueryPrefix: true, arrayFormat: 'comma', encode: false });                                                                      //delete
     this.props.history.push(str);
+    console.log('str:', str);                                                                                         //delete
+    console.log('URLParams: ', URLParams);                                                                            //delete
   }
 
 
@@ -281,7 +280,6 @@ class Filter extends React.Component {
             <input className="search-by__input" type="text" name="search" placeholder="Enter text" onChange={this.handleByTyping}></input>
             <span onclick="var input = this.previousSibling; input.value = ''; input.focus();"></span>
           </span>
-            
         </section>  
         <section className="filter-by">
           <div className="filter-headers">Brand Name

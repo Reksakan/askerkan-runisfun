@@ -1,0 +1,9 @@
+@import '../../partials/variables';
+@import '../../partials/mixins';
+@import '../../partials/fonts'; 
+
+.body-basket {
+  padding-top: $padding-top;
+  @include flex-col;
+}
+

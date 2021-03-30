@@ -1,5 +1,8 @@
 //https://www.youtube.com/watch?v=m3SOwcXUsIQ
 .card {
+  display: flex;
+  flex-direction: column;
+
   &__container {
     display: inline-block;
     width: 18rem;
@@ -22,15 +25,13 @@
     }
   }
   &__img {
-    width: 100%;
-    
+    width: 100%; 
   }
-}
 
-.description {
-  display: flex;
-  flex-direction: column;
-
+  &__button-place {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   &__button {
     border: 1px solid orange;
@@ -39,18 +40,19 @@
     height: 2.5rem;
     width: 8rem;
     margin-top: 0.5rem;
-    margin-left: auto;
-    margin-right: auto;
     &:hover {
       background-color: #f4991a;
     }
   }
+
   &__text {
     margin-bottom: 0rem;
     text-align: center;
   }
+
   .bold {
     font-weight: 700;
   }
 }
+
   

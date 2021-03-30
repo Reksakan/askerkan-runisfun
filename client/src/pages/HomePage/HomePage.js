@@ -3,9 +3,11 @@ import axios from 'axios';
 import qs from 'qs';
 import Filter from './components/Filter/Filter';
 import Card from './components/Card/Card';
+import ProductPage from '../ProductPage/ProductPage';
 import './HomePage.scss';
 
 const API_URL = process.env.REACT_APP_API_URL;
+
 class HomePage extends React.Component {
     state = {
       urlInitShoes: '',
@@ -23,8 +25,7 @@ class HomePage extends React.Component {
         if(this.state.shoesInitial.length > 0) {
           this.filterShoes()}
     })
-    .catch(error => {window.alert(error)})
-    
+    .catch(error => {window.alert(error)}) 
   }
 
   componentDidMount() {
@@ -129,6 +130,16 @@ class HomePage extends React.Component {
       .catch(error => {window.alert(error)})
   }
 
+  // viewDetails = (e) => {
+  //   e.preventDefault();
+  //   console.log('e.target.value again: ', e.target.value);
+  //   return(
+  //     <Navbar.Brand href="/description">
+  //       <ProductPage id={e.target.value}/> 
+  //     </Navbar.Brand>
+  //   )
+  // }
+
 
   listOfShoes() {
     const shoesList = this.state.shoesFiltered.map(shoe => {
@@ -142,7 +153,8 @@ class HomePage extends React.Component {
       price = {shoe.price}
       picture = {shoe.picture}
       link = {shoe.link}
-      callAdd = {this.addShoe}
+      // callAdd = {this.addShoe}
+      viewDetailsId = {shoe.id}
       shoeTypes = {shoe.types}/>
     })
     return shoesList;

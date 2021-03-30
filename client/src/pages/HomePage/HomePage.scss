@@ -4,12 +4,10 @@
 
 
 .body {
-  display: flex;
-  flex-direction: column;
+ @include flex-col;
   @include tablet {
-    display: flex;
-    flex-direction: row;
-    padding-top: 8rem;
+    @include flex-row;
+    padding-top: $padding-top;
     margin-left: 2rem;
     &__shoes {
       display: flex;

@@ -16,6 +16,6 @@ app.use(express.json());
 // app.use('/', listOfShoes);
 app.use('/basket', listOfBasket);
 app.use('/', listOfShoesVariances);
-app.use('/compliance', listOfCompliance);
+app.use('/compliance', listOfCompliance); //shoud work on it later. 
 
 app.listen(port, () => console.log(`Server is running at the ${port}`));

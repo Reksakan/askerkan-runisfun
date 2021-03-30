@@ -1,0 +1,12 @@
+@import '../../../../partials/variables';
+@import '../../../../partials/mixins';
+@import '../../../../partials/fonts'; 
+
+.product {
+  @include tablet {
+    @include flex-row;
+    &__img {
+      width: 50rem;
+    }
+  }
+}
