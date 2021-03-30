@@ -3,7 +3,6 @@ import axios from 'axios';
 import qs from 'qs';
 import Filter from './components/Filter/Filter';
 import Card from './components/Card/Card';
-import ProductPage from '../ProductPage/ProductPage';
 import './HomePage.scss';
 
 const API_URL = process.env.REACT_APP_API_URL;
