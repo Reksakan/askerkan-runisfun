@@ -1,7 +1,7 @@
 [
   {
     "id": "SALRUN123450001",
-    "name": "Predict-RA",
+    "name": "Predict-RAsker",
     "producer" : "Salomon",
     "price" : "$250",
     "description": "PREDICT RA is a completely new concept in road running. It uses an ultra-decoupled, super-stable, highly cushioned bottom unit, mated to a totally new upper that moves with you, for a new road-running experience. Predict gives runners the smoothest ride of any shoe out there.",
@@ -47,7 +47,7 @@
     "description": "The lightweight SONIC 3 ACCELERATE training shoe is packed with features designed to optimize your speed training: Optivibe reduces vibrations to limit muscle fatigue, a geometric decoupling axis promotes a quick forward transition and road-specific Sensifit fits your foot like a glove.",
     "categories": "running",
     "link" : "https://www.salomon.com/en-ca/shop/product/sonic-3-accelerate.html#color=18034",
-    "picture" : "../../images/shoes/Salomon/Running/Sonic-3-accelerate/SONIC-3-ACCELERATE-black.jpg",
+    "picture" : "/../../images/shoes/Salomon/Running/Sonic-3-accelerate/SONIC-3-ACCELERATE-black.jpg",
     "types" : [
       {
         "idInt" : "SALRUN123450002INT01",  
