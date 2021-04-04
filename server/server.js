@@ -14,6 +14,7 @@ app.use(cors());
 app.use(express.json()); 
 
 // app.use('/', listOfShoes);
+app.use(express.static("public"));
 app.use('/basket', listOfBasket);
 app.use('/', listOfShoesVariances);
 app.use('/compliance', listOfCompliance); //shoud work on it later. 

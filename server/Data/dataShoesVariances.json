@@ -7,7 +7,7 @@
     "description": "PREDICT RA is a completely new concept in road running. It uses an ultra-decoupled, super-stable, highly cushioned bottom unit, mated to a totally new upper that moves with you, for a new road-running experience. Predict gives runners the smoothest ride of any shoe out there.",
     "categories": "running",
     "link" : "https://www.salomon.com/en-ca/shop/product/predict-ra.html#color=12184",
-    "picture" : "/images/shoes/Salomon/Running/Predict-RA/Predict-RA-black.jpg",
+    "picture" : "public/images/shoes/Salomon/Running/Predict-RA/Predict-RA-black.jpg",
     "types" : [
       {
         "idInt" : "SALRUN123450001INT01",  
@@ -16,7 +16,7 @@
         "size": "8",
         "quantity": "3",
         "lastOrdered": "12/01/2020",
-        "image": "/images/shoes/Adidas/Running/ADIZERO-BOSTON-9/Adizero_Boston_8_Shoes-black.jpg",
+        "image": "../../public/images/shoes/Adidas/Running/ADIZERO-BOSTON-9/Adizero_Boston_8_Shoes-black.jpg",
         "isInstock": true
       },
       {
@@ -47,7 +47,7 @@
     "description": "The lightweight SONIC 3 ACCELERATE training shoe is packed with features designed to optimize your speed training: Optivibe reduces vibrations to limit muscle fatigue, a geometric decoupling axis promotes a quick forward transition and road-specific Sensifit fits your foot like a glove.",
     "categories": "running",
     "link" : "https://www.salomon.com/en-ca/shop/product/sonic-3-accelerate.html#color=18034",
-    "picture" : "/images/shoes/Salomon/Running/Sonic-3-accelerate/SONIC-3-ACCELERATE-black.jpg",
+    "picture" : "../../images/shoes/Salomon/Running/Sonic-3-accelerate/SONIC-3-ACCELERATE-black.jpg",
     "types" : [
       {
         "idInt" : "SALRUN123450002INT01",  
