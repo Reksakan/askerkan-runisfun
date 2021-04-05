@@ -3,7 +3,7 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import qs from 'qs';
 import './Filter.scss';
-import shoesManufacturers from './dataShoesManufacturer';
+import shoesManufacturers from './dataShoesManufacturer.js';
 import shoesModels from './dataShoesModels';
 import shoesCategories from './dataShoesCategories';
 import shoesColours from './dataShoesColours';
