@@ -2,10 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 import qs from 'qs';
-import './ProductFilter.scss';
 import makeAnimated from 'react-select/animated';
-import shoesGenders from './dataGender';
 import { withRouter } from "react-router";
+import {parse, v4 as uuidv4} from 'uuid';
+import ShoeVariants from '../ShoeVariants/ShoeVariants';
+import './ProductFilter.scss';
+import { parseParams } from './ProductFilterAdd';
 
 
 const animatedComponents = makeAnimated();
@@ -13,19 +15,54 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 class ProductFilter extends React.Component {
   state = {
-    productChosen: {},
-    productGendersFiltered: [],
-    productFiltered: []
+    product: [],
+    productBasket: {},
+    productTypes: [],
+    productTypesToBuy: [],
+    
+    productColoursFiltered: [],
+    productSizesFiltered: [],
+    colours: [],
+    sizes: []
   }
 
+  
   fetchShoe(id) {
     const shoeID = id;
     axios
     .get(`${API_URL}/${shoeID}`)
     .then(response => {
-      console.log('Response: ', response.data[0])
+
+      const coloursAll = response.data[0].types.map(function(item) {return item.colour});
+      const colour = coloursAll.reduce((colours, colour) => (colours.includes(colour) ? colours : [...colours, colour]), []).sort();
+      const colours = colour.map(function(item) {return {'value': item, 'label': item}})
+
+      const sizesAll = response.data[0].types.map(function(item) {return item.size});
+      const size = sizesAll.reduce((sizes, size) => (sizes.includes(size) ? sizes : [...sizes, size]), []).sort();
+      var sizes = size.map(function(item) {return {'value': item, 'label': item}})
+
+      let product = response.data[0]
+      let productTypes = product.types;
+      delete product.types;
+
+      const productBasket = {
+        "id": product.id,
+        "name": product.name,
+        "producer" : product.producer,
+        "price" : product.price,
+        "gender" : product.gender,
+        "description": product.description,
+        "categories": product.categories,
+        "link" : product.link,
+        "picture" : product.picture
+      }
+      
       this.setState({
-        productFiltered: response.data[0]
+        product: product,
+        productBasket: productBasket,
+        productTypes: productTypes,
+        colours: colours,
+        sizes: sizes
       })
     })
     .catch(error => {window.alert(error)})
@@ -33,81 +70,184 @@ class ProductFilter extends React.Component {
   
   clearChosenFilters = (e) => {
     this.setState({
-      productGendersFiltered: []
+      productColoursFiltered: [],
+      productSizesFiltered: []
     })
     this.populateURLProduct();
   }
 
-  // clearFilters = (e) => {} 
-  handleChosenGender = (e) => {
-    let productGendersFiltered = [];
-    if (e !== null) {productGendersFiltered = e};
-    this.setState({
-      productGendersFiltered: productGendersFiltered
-    });
-    console.log('e from handleChosenGender: ', e);                                                //delete
-    console.log('productGendersFiltered in the State: ', productGendersFiltered);                 //delete
+  sendToBasket = (e) => {
+    const productBought = {...{idBought: uuidv4()},...this.state.productBasket, ...{types: this.state.productTypesToBuy}} ;
+    axios
+    .post(`${API_URL}/basket`, productBought)
+    .then((res) => {console.log('res.data from server: ', res.data)})
+    .catch(error => {window.alert(error)})
   }
 
+  handleChosenColour = (e) => {
+    let productColoursFiltered = [];
+    if (e !== null) {productColoursFiltered = e};
+    this.setState({
+      productColoursFiltered: productColoursFiltered
+    });
+  }
+
+  handleChosenSize = (e) => {
+    let productSizesFiltered = [];
+    if (e !== null) {productSizesFiltered = e};
+    this.setState({
+      productSizesFiltered: productSizesFiltered
+    });
+  }
+
+
   populateURLProduct = () => {
-    // const finalShoeID = this.state.
-    //const productURLParams = this.state.productChosen;
-    const productURLID = this.state.productChosen.id;
-    const productURLName = this.state.productChosen.name;
-    const finalURLGender = this.state.productGendersFiltered.map(gender => gender.value);
+    const productURLID = this.state.product.id;
+    const productURLName = this.state.product.name;
+    const productURLColour = this.state.productColoursFiltered.map(colour => colour.value);
+    const productURLSize = this.state.productSizesFiltered.map(size => size.value)
 
     const productURLParams = {};
     productURLParams.id = productURLID; 
     productURLParams.name = productURLName; 
-    if(finalURLGender.length > 0) {productURLParams.gender = finalURLGender};
+    
+    if(productURLColour.length > 0) {productURLParams.colour = productURLColour};
+    if(productURLSize.length > 0) {productURLParams.size = productURLSize};
     const strProduct = qs.stringify(productURLParams, { addQueryPrefix: true, arrayFormat: 'comma', encode: false});
     this.props.history.push(strProduct);
-    
-    console.log('finalURLGender in populateURLProduct: ', finalURLGender);                        //delete
-    console.log('productURLParams: ', productURLParams);                                          //delete
-    console.log('str: ', strProduct);                                                                    //delete
-    console.log('this.props.history:  ', this.props.history);                                     //delete
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.productGendersFiltered !== this.state.productGendersFiltered) {
-      this.populateURLProduct();
+    if(prevState.productColoursFiltered !== this.state.productColoursFiltered
+      || prevState.productSizesFiltered !== this.state.productSizesFiltered) {
+        this.populateURLProduct();
+        this.productSelected();
     }  
-    // if (this.state.productChosen.id !== undefined 
-    //   && this.state.productChosen.id !== null) 
-    //   {gender = this.state.shoesManufacturersFiltered.map(item => item.value)} 
+
+    if (prevState.productColoursFiltered !== this.state.productColoursFiltered) {
+      
+      let coloursArr =[];
+      if (this.state.productColoursFiltered.length === 0) 
+        {
+          let productTypesToBuy = this.state.productTypes;
+          const sizes = productTypesToBuy
+          .map(function(item) {return item.size})
+          .reduce((sizes, size) => (sizes.includes(size) ? sizes : [...sizes, size]), []).sort()
+          .map(function(item) {return {'value': item, 'label': item}})
+
+        this.setState({
+          productTypesToBuy: productTypesToBuy,
+          sizes: sizes
+        })}
+      else {
+        coloursArr = this.state.productColoursFiltered.map(colour => colour.value)
+        let productTypesToBuy = this.state.productTypes.filter(shoeType => (
+          coloursArr.includes(shoeType.colour)
+        ))
+        const sizes = productTypesToBuy
+        .map(function(item) {return item.size})
+        .reduce((sizes, size) => (sizes.includes(size) ? sizes : [...sizes, size]), []).sort()
+        .map(function(item) {return {'value': item, 'label': item}})
+
+        this.setState({
+          productTypesToBuy: productTypesToBuy,
+          sizes: sizes
+        })
+      }
+    }
+    if (prevState.productSizesFiltered !== this.state.productSizesFiltered) {
+      let sizesArr =[];
+      if (this.state.productSizesFiltered.length === 0) 
+        {
+          let productTypesToBuy = this.state.productTypes;
+          const colours = productTypesToBuy
+          .map(function(item) {return item.colour})
+          .reduce((colours, colour) => (colours.includes(colour) ? colours : [...colours, colour]), []).sort()
+          .map(function(item) {return {'value': item, 'label': item}})
+
+        this.setState({
+          productTypesToBuy: productTypesToBuy,
+          colours: colours
+        })}
+      else {
+        sizesArr = this.state.productSizesFiltered.map(size => size.value)
+        let productTypesToBuy = this.state.productTypes.filter(shoeType => (
+          sizesArr.includes(shoeType.size)
+        ))
+        const colours = productTypesToBuy
+        .map(function(item) {return item.colour})
+        .reduce((colours, colour) => (colours.includes(colour) ? colours : [...colours, colour]), []).sort()
+        .map(function(item) {return {'value': item, 'label': item}})
+
+        this.setState({
+          productTypesToBuy: productTypesToBuy,
+          colours: colours
+        })
+      }
+    }
   }
 
   componentDidMount() {
     const productChosen = qs.parse(this.props.location.search, {comma: true, ignoreQueryPrefix: true});
+    console.log('productChosen in componentDidMount: ', productChosen)
+    const urlParams = parseParams(productChosen);
+    console.log('urlParams in componentDidMount: ', urlParams)
     this.setState({
-      productChosen: productChosen
+      product: urlParams.product,
+      productColoursFiltered: urlParams.defaultValueColours,
+      productSizesFiltered: urlParams.defaultValueSizes
     }) 
-      
     this.fetchShoe(productChosen.id);
-  
-    
-    console.log('productChosen in componentDidMount: ', productChosen);
-    console.log('Product fetched from the DataBase: ', this.state.productFiltered);
+    this.productSelected();
+  }
+
+  productSelected = () => {
+    const productChosen = qs.parse(this.props.location.search, {comma: true, ignoreQueryPrefix: true});
+    const urlParams = parseParams(productChosen);
+    const colours = this.state.productColoursFiltered.map(colour => colour.value)
+    const sizes = this.state.productSizesFiltered.map(size => size.value)
+    const productTypesToBuy = this.state.productTypes.filter(shoe => (
+      (colours.length == 0 || colours.includes(shoe.colour))
+      && (sizes.length == 0 || sizes.includes(shoe.size))
+    ))
+      let productSelected = productTypesToBuy.map(item => {
+      return (
+      <ShoeVariants item={item} gender={this.state.product.gender}/>)
+    })
+    return productSelected;
   }
 
   render() {
     return (
-      <aside>
-        <button className="filter-by__button-product" type="button" value="clear" onClick={this.clearChosenFilters}>Clear Filters</button>
+      <div className="filter-by">
+        <button className="filter-by__button-product" type="button" value="clear" onClick={this.clearChosenFilters}>CLEAR FILTERS</button>
         <div className="filter-by__gender">
-        Gender
-        <Select 
-          placeholer = 'Adults'
-          closeMenuOnSelect = {false}
-          components = {animatedComponents}
-          value = {this.state.productGendersFiltered}
-          isMulti
-          onChange = {this.handleChosenGender}
-          options = {shoesGenders} 
-        />
+          Colour
+          <Select 
+            placeholer = 'Adults'
+            closeMenuOnSelect = {false}
+            components = {animatedComponents}
+            value = {this.state.productColoursFiltered}
+            isMulti
+            onChange = {this.handleChosenColour}
+            options = {this.state.colours} 
+          />
+        </div>
+        <div className="filter-by__gender">
+          Sizes
+          <Select 
+            placeholer = 'Adults'
+            closeMenuOnSelect = {false}
+            components = {animatedComponents}
+            value = {this.state.productSizesFiltered}
+            isMulti
+            onChange = {this.handleChosenSize}
+            options = {this.state.sizes} 
+          />
+        </div>
+        <div className="filter-result">{this.productSelected()}</div>
+        <button className="filter-by__button-product" type="button" value="clear" onClick={this.sendToBasket}>ADD TO BASKET</button>
       </div>
-      </aside>
     )
   }
 

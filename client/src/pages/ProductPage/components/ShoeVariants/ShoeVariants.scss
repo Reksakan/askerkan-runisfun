@@ -1,0 +1,21 @@
+@import '../../../../partials/variables';
+@import '../../../../partials/mixins';
+@import '../../../../partials/fonts';
+
+.sample {
+    border: 1px solid blue;
+    margin: 4px;
+    width: 30%;
+    height: 3rem;
+    border-radius: 1rem;
+    text-align: center;   
+    @include tablet {
+        width: 50%;
+        height: 2rem;
+    }
+    @include desktop {
+        min-width: 6rem;
+        width: 20%;
+        height: 2vw;
+    }
+}

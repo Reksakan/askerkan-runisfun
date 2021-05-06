@@ -4,26 +4,32 @@ const fs = require('fs');
 const basketDataFile = './Data/dataBasket.json';
 const dataOfBasket = require(basketDataFile);
 
-
-
 router.get('/', (request, response) => {
   return response.status(200).json(dataOfBasket);
 }); 
 
 
 router.post('/', (request, response) => {
-  const newBasket = request.body; 
-  console.log('newBasket which will be added:', newBasket);
+  let newBasket = request.body; 
+  let oldBasket = [];
   //Here can put 'if' statement if any check is needed
-  if (newBasket.name
-    && newBasket.producer
-    && newBasket.price
-    && newBasket.link) {
-      const newDataOfBasket = [...dataOfBasket, newBasket];
-      fs.writeFile(basketDataFile, JSON.stringify(newDataOfBasket), () => {
-        return response.status(201).json(newDataOfBasket);
-      })}
-    else {
+    if (newBasket) {
+      fs.readFile(basketDataFile, 'utf8', (err, jsonString) => {
+        if(err) {
+          console.log('Error reading file from: ', err)
+          return
+        }
+        try {
+          oldBasket = JSON.parse(jsonString)
+          const newDataOfBasket = [...oldBasket, newBasket];
+          fs.writeFile(basketDataFile, JSON.stringify(newDataOfBasket), () => {
+          return response.status(201).json(newDataOfBasket);
+      })
+        } catch(err) {
+          console.log('Error parsing JSON string: ', err)
+        }
+      })
+    } else {
       response.status(400).json({
         success: false
       })

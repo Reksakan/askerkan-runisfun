@@ -3,18 +3,21 @@
 @import '../../../../partials/fonts'; 
 
 .product {
-  padding-top: 0;
+  border: 1px solid red;
+  @include flex-col;
   @include tablet {
-    @include flex-row;
+    width: 35vw
+  }
+  &__text {
+    text-align: center;
+    margin-bottom: 0;
+  }
+}
 
-    &__img {
-      width: 40rem;
-    }
-  }
-  &__img-box {
-    border: 1px solid white;
-  }
-  &__details {
-    border: 1px solid white
-  }
+.product__img {
+    width: 100%;
+}
+
+.bold {
+  font-weight: 700;
 }

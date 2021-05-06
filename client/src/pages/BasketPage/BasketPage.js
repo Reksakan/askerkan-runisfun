@@ -14,6 +14,7 @@ class BasketPage extends React.Component {
     axios
     .get(`${API_URL}/basket`)
     .then(response => {
+      console.log('response.data[0]', response.data[0])
       this.setState({
         shoesInBasket: response.data
       })

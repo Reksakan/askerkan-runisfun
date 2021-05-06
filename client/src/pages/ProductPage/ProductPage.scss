@@ -1,15 +1,28 @@
+// https://www.youtube.com/watch?v=VwxGKpvW8Zk
 @import '../../partials/variables';
 @import '../../partials/mixins';
 @import '../../partials/fonts'; 
 
 
-// .product {
-//   @include flex-col;
-//   @include tablet {
-//     @include flex-row;
-//     border: 1px solid red;
-//     padding-top: $padding-top;
-//     margin-left: 2rem;
-//   }
-// }
+.productPage {
+  border: 4px solid green;
+  @include flex-col;
+  padding-top: 8rem;
+  padding-bottom: 18rem;
+  @include tablet {
+    @include flex-row;
+    justify-content: space-around;
+    padding-top: $padding-top;
+    
+  }
+  &__sort {
+    width: 100%;
+    @include tablet {
+      order: -1;
+      width: 25vw;
+      height: 20vw;
+    } 
+  }
+}
+
 
