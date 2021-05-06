@@ -8,9 +8,14 @@ const getProductValue = (product) => {
   console.log('product in getProductValue: ', product)
   return (productField) => {
     console.log('productField in getProductValue', productField)
-    if (product?.[productField] === undefined || product?.[productField] === null || isNaN(product?.[productField])) {
+    if (product?.[productField] === undefined || product?.[productField] === null) {
       return []
     }
+    
+    // isNaN(product?.[productField]) - doesn't work properly with colours
+    // if (product?.[productField] === undefined || product?.[productField] === null || isNaN(product?.[productField]) ) {
+    //   return []
+    // }
 
     // create and array
     // map valued form this array
