@@ -5,7 +5,9 @@ import { withRouter } from "react-router";
 import {v4 as uuidv4} from 'uuid';
 
 const getProductValue = (product) => {
+  console.log('product in getProductValue: ', product)
   return (productField) => {
+    console.log('productField in getProductValue', productField)
     if (product?.[productField] === undefined || product?.[productField] === null || isNaN(product?.[productField])) {
       return []
     }
@@ -18,19 +20,19 @@ const getProductValue = (product) => {
 }
 
 export const parseParams = (product) => {
-  console.log('product in parseParams : ', product)
+  // console.log('product in parseParams function: ', product)
   const id = product.id;
   const getValue = getProductValue(product);
-  
+
   const arrColour = getValue('colour');
-  console.log('arrColour in parseParams: ', arrColour)
+  // console.log('arrColour: ', arrColour)
   let defaultValueColours = [];
   if (arrColour.length !== 0) {
     defaultValueColours = arrColour.map(function(item) {return {'value': item, 'label': item}})
   }
 
   const arrSize = getValue('size');
-  console.log('arrSize in parseParams: ', arrSize)
+  // console.log('arrSize: ', arrSize)
   let defaultValueSizes = [];
   if (arrSize.length !== 0) {
     defaultValueSizes = arrSize.map(function(item) {return {'value': item, 'label': item}})

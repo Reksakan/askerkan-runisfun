@@ -189,9 +189,7 @@ class ProductFilter extends React.Component {
 
   componentDidMount() {
     const productChosen = qs.parse(this.props.location.search, {comma: true, ignoreQueryPrefix: true});
-    console.log('productChosen in componentDidMount: ', productChosen)
     const urlParams = parseParams(productChosen);
-    console.log('urlParams in componentDidMount: ', urlParams)
     this.setState({
       product: urlParams.product,
       productColoursFiltered: urlParams.defaultValueColours,
@@ -203,12 +201,10 @@ class ProductFilter extends React.Component {
 
   productSelected = () => {
     const productChosen = qs.parse(this.props.location.search, {comma: true, ignoreQueryPrefix: true});
-    const urlParams = parseParams(productChosen);
-    const colours = this.state.productColoursFiltered.map(colour => colour.value)
-    const sizes = this.state.productSizesFiltered.map(size => size.value)
+    const urlParams = parseParams(productChosen);    
     const productTypesToBuy = this.state.productTypes.filter(shoe => (
-      (colours.length == 0 || colours.includes(shoe.colour))
-      && (sizes.length == 0 || sizes.includes(shoe.size))
+      (urlParams.arrColour.length == 0 || urlParams.arrColour.includes(shoe.colour))
+      && (urlParams.arrSize.length == 0 || urlParams.arrSize.includes(shoe.size))
     ))
       let productSelected = productTypesToBuy.map(item => {
       return (
