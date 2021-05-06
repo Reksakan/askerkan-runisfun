@@ -14,12 +14,10 @@ class ProductPage extends React.Component {
 
   fetchShoe(urlProduct) {
     const shoeID = urlProduct.id;
-    // console.log('shoeID: ', shoeID);                                                           //DELETE
     axios
     .get(`${API_URL}/${shoeID}`)
     .then(response => {
       const shoeChosen =  response.data;
-      // console.log('shoeChosen: ', shoeChosen);                                                 //DELETE
       this.setState({
         shoeChosen: shoeChosen
       })
