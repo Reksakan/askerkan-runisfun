@@ -6,7 +6,7 @@ import ProductPage from './pages/ProductPage/ProductPage';
 import BasketPage from './pages/BasketPage/BasketPage';
 import Header from './pages/HomePage/components/Header/Header';
 import Footer from './pages/HomePage/components/Footer/Footer';
-import { withRouter } from "react-router-dom"; 
+// import { withRouter } from "react-router-dom"; 
 
 
 class App extends React.Component {

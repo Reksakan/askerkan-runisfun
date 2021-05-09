@@ -7,7 +7,7 @@ import { withRouter } from "react-router";
 import {parse, v4 as uuidv4} from 'uuid';
 import ShoeVariants from '../ShoeVariants/ShoeVariants';
 import './ProductFilter.scss';
-import { parseParams } from './ProductFilterAdd';
+import { parseParams, selectComponentInput} from './ProductFilterAdd';
 
 
 const animatedComponents = makeAnimated();
@@ -16,9 +16,9 @@ const API_URL = process.env.REACT_APP_API_URL;
 class ProductFilter extends React.Component {
   state = {
     product: [],
-    productBasket: {},
     productTypes: [],
-    productTypesToBuy: [],
+    productTypesFiltered: [],
+    productSentToBasket:{},
     
     productColoursFiltered: [],
     productSizesFiltered: [],
@@ -32,34 +32,13 @@ class ProductFilter extends React.Component {
     axios
     .get(`${API_URL}/${shoeID}`)
     .then(response => {
-
-      const coloursAll = response.data[0].types.map(function(item) {return item.colour});
-      const colour = coloursAll.reduce((colours, colour) => (colours.includes(colour) ? colours : [...colours, colour]), []).sort();
-      const colours = colour.map(function(item) {return {'value': item, 'label': item}})
-
-      const sizesAll = response.data[0].types.map(function(item) {return item.size});
-      const size = sizesAll.reduce((sizes, size) => (sizes.includes(size) ? sizes : [...sizes, size]), []).sort();
-      var sizes = size.map(function(item) {return {'value': item, 'label': item}})
-
       let product = response.data[0]
       let productTypes = product.types;
-      delete product.types;
-
-      const productBasket = {
-        "id": product.id,
-        "name": product.name,
-        "producer" : product.producer,
-        "price" : product.price,
-        "gender" : product.gender,
-        "description": product.description,
-        "categories": product.categories,
-        "link" : product.link,
-        "picture" : product.picture
-      }
+      const colours = selectComponentInput(productTypes, 'colour').dataSelectedOutput;
+      const sizes = selectComponentInput(productTypes, 'size').dataSelectedOutput;
       
       this.setState({
         product: product,
-        productBasket: productBasket,
         productTypes: productTypes,
         colours: colours,
         sizes: sizes
@@ -68,6 +47,28 @@ class ProductFilter extends React.Component {
     .catch(error => {window.alert(error)})
   }
   
+  sendToBasket = (e) => {
+    const productChosen = qs.parse(this.props.location.search, {comma: true, ignoreQueryPrefix: true});
+    const urlParams = parseParams(productChosen);    
+    const productTypesFiltered = this.state.productTypes.filter(shoe => (
+      (urlParams.arrColour.length == 0 || urlParams.arrColour.includes(shoe.colour))
+      && (urlParams.arrSize.length == 0 || urlParams.arrSize.includes(shoe.size))
+    )) 
+    
+    const productTypeChosen = productTypesFiltered.map(item => item.idInt);
+    if (productTypeChosen.length === 1) {
+      const productBought = {idUnique: uuidv4(), idShoe: this.state.product.id, idInt: productTypeChosen[0]} ;
+      axios
+      .post(`${API_URL}/basket`, productBought)
+      .then((res) => {console.log('res.data from server: ', res.data)})
+      .catch(error => {window.alert(error)})
+      alert("Shoe added to the basket")
+    }
+    else {
+      alert("Please choose only one product")
+    }
+  }
+
   clearChosenFilters = (e) => {
     this.setState({
       productColoursFiltered: [],
@@ -75,15 +76,7 @@ class ProductFilter extends React.Component {
     })
     this.populateURLProduct();
   }
-
-  sendToBasket = (e) => {
-    const productBought = {...{idBought: uuidv4()},...this.state.productBasket, ...{types: this.state.productTypesToBuy}} ;
-    axios
-    .post(`${API_URL}/basket`, productBought)
-    .then((res) => {console.log('res.data from server: ', res.data)})
-    .catch(error => {window.alert(error)})
-  }
-
+  
   handleChosenColour = (e) => {
     let productColoursFiltered = [];
     if (e !== null) {productColoursFiltered = e};
@@ -123,34 +116,25 @@ class ProductFilter extends React.Component {
         this.populateURLProduct();
         this.productSelected();
     }  
-
     if (prevState.productColoursFiltered !== this.state.productColoursFiltered) {
-      
       let coloursArr =[];
       if (this.state.productColoursFiltered.length === 0) 
         {
-          let productTypesToBuy = this.state.productTypes;
-          const sizes = productTypesToBuy
-          .map(function(item) {return item.size})
-          .reduce((sizes, size) => (sizes.includes(size) ? sizes : [...sizes, size]), []).sort()
-          .map(function(item) {return {'value': item, 'label': item}})
-
-        this.setState({
-          productTypesToBuy: productTypesToBuy,
-          sizes: sizes
-        })}
+          let productTypesFiltered = this.state.productTypes;
+          const sizes = selectComponentInput(productTypesFiltered, 'size').dataSelectedOutput
+          this.setState({
+            productTypesFiltered: productTypesFiltered,
+            sizes: sizes
+          })
+        }
       else {
         coloursArr = this.state.productColoursFiltered.map(colour => colour.value)
-        let productTypesToBuy = this.state.productTypes.filter(shoeType => (
+        let productTypesFiltered = this.state.productTypes.filter(shoeType => (
           coloursArr.includes(shoeType.colour)
         ))
-        const sizes = productTypesToBuy
-        .map(function(item) {return item.size})
-        .reduce((sizes, size) => (sizes.includes(size) ? sizes : [...sizes, size]), []).sort()
-        .map(function(item) {return {'value': item, 'label': item}})
-
+        const sizes = selectComponentInput(productTypesFiltered, 'size').dataSelectedOutput
         this.setState({
-          productTypesToBuy: productTypesToBuy,
+          productTypesFiltered: productTypesFiltered,
           sizes: sizes
         })
       }
@@ -159,28 +143,21 @@ class ProductFilter extends React.Component {
       let sizesArr =[];
       if (this.state.productSizesFiltered.length === 0) 
         {
-          let productTypesToBuy = this.state.productTypes;
-          const colours = productTypesToBuy
-          .map(function(item) {return item.colour})
-          .reduce((colours, colour) => (colours.includes(colour) ? colours : [...colours, colour]), []).sort()
-          .map(function(item) {return {'value': item, 'label': item}})
-
-        this.setState({
-          productTypesToBuy: productTypesToBuy,
-          colours: colours
-        })}
+          let productTypesFiltered = this.state.productTypes;
+          const colours = selectComponentInput(productTypesFiltered, 'colour').dataSelectedOutput;
+          this.setState({
+            productTypesFiltered: productTypesFiltered,
+            colours: colours
+          })
+        }
       else {
         sizesArr = this.state.productSizesFiltered.map(size => size.value)
-        let productTypesToBuy = this.state.productTypes.filter(shoeType => (
+        let productTypesFiltered = this.state.productTypes.filter(shoeType => (
           sizesArr.includes(shoeType.size)
         ))
-        const colours = productTypesToBuy
-        .map(function(item) {return item.colour})
-        .reduce((colours, colour) => (colours.includes(colour) ? colours : [...colours, colour]), []).sort()
-        .map(function(item) {return {'value': item, 'label': item}})
-
+        const colours = selectComponentInput(productTypesFiltered, 'colour').dataSelectedOutput;
         this.setState({
-          productTypesToBuy: productTypesToBuy,
+          productTypesFiltered: productTypesFiltered,
           colours: colours
         })
       }
@@ -202,11 +179,11 @@ class ProductFilter extends React.Component {
   productSelected = () => {
     const productChosen = qs.parse(this.props.location.search, {comma: true, ignoreQueryPrefix: true});
     const urlParams = parseParams(productChosen);    
-    const productTypesToBuy = this.state.productTypes.filter(shoe => (
+    const productTypesFiltered = this.state.productTypes.filter(shoe => (
       (urlParams.arrColour.length == 0 || urlParams.arrColour.includes(shoe.colour))
       && (urlParams.arrSize.length == 0 || urlParams.arrSize.includes(shoe.size))
-    ))
-      let productSelected = productTypesToBuy.map(item => {
+    ))    
+    let productSelected = productTypesFiltered.map(item => {
       return (
       <ShoeVariants item={item} gender={this.state.product.gender}/>)
     })
