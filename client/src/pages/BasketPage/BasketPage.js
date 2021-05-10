@@ -16,10 +16,6 @@ class BasketPage extends React.Component {
     axios
     .get(`${API_URL}/basket`)
     .then(response => {
-      console.log('shoesInBasket: ', response.data)   //DELETE
-      // if (response.data.length > 0) {
-      //   this.filterShoes();
-      // }
       this.setState({
         shoesInBasket: response.data
       })
@@ -29,7 +25,6 @@ class BasketPage extends React.Component {
     axios
     .get(`${API_URL}/`)
     .then(response => {
-        console.log('shoesInitial: ', response.data)  //DELETE
         this.setState({
           shoesInitial: response.data
         })
@@ -42,19 +37,19 @@ class BasketPage extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.shoesInBasket.length > 0 && this.state.shoesInitial) {
+    if (this.state.shoesInBasket.length > 0 && this.state.shoesInitial.length > 0) {
       this.filterShoes()
     }
   }
 
   filterShoes() {    
-    console.log('this.state.shoesInBasket', this.state.shoesInBasket)
-    const shoesChosen = shoesChosenIDs(this.state.shoesInBasket);
-    console.log('shoesChosen: ', shoesChosen)
-    const shoes = this.state.shoesInBasket.map(shoe => {
-      return this.state.shoesInitial.filter(t => t.id == shoe.idShoe)
+    const shoes1 = this.state.shoesInBasket.map(shoe => {
+      return {idUnique: shoe.idUnique, idIntChosen: shoe.idInt, ...this.state.shoesInitial.filter(t => t.id === shoe.idShoe)[0]}
     })
-    console.log('shoes: ', shoes)
+    const shoes2 = shoes1.map(shoe => {
+      shoe.types = shoe.types.filter(type => type.idInt === shoe.idIntChosen)[0]
+      return (shoe);
+    })
   } 
 
   listOfInventory() {
