@@ -8,8 +8,9 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 class BasketPage extends React.Component {
   state = {
-    shoesInBasket: [],
-    shoesInitial: []
+    shoesInBasket: [], //just 3 parameters
+    shoesInitial: [],
+    shoesFinal: []
   };
 
   fetchShoesToBuy() {
@@ -36,34 +37,43 @@ class BasketPage extends React.Component {
     this.fetchShoesToBuy();
   }
 
-  componentDidUpdate() {
-    if (this.state.shoesInBasket.length > 0 && this.state.shoesInitial.length > 0) {
-      this.filterShoes()
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.shoesInitial !== this.state.shoesInitial) {
+      const outPut = this.filterShoes();
+      console.log('outPut:', outPut)
+      console.log('prevState.shoesInitial: ',  prevState.shoesInitial)
+      console.log('state.shoesInitial: ', this.state.shoesInitial)
+      this.setState({
+        shoesFinal: outPut
+      })
+      
     }
+    console.log('this.state.shoesFinal in componentDidUpdate: ', this.state.shoesFinal)
   }
 
   filterShoes() {    
     const shoes1 = this.state.shoesInBasket.map(shoe => {
-      return {idUnique: shoe.idUnique, idIntChosen: shoe.idInt, ...this.state.shoesInitial.filter(t => t.id === shoe.idShoe)[0]}
+      return {idUnique: shoe.idUnique, idIntChosen: shoe.idInt, ...this.state.shoesInitial.find(t => t.id === shoe.idShoe)}
     })
     const shoes2 = shoes1.map(shoe => {
-      shoe.types = shoe.types.filter(type => type.idInt === shoe.idIntChosen)[0]
+      shoe.types = shoe.types.find(type => type.idInt === shoe.idIntChosen)
       return (shoe);
     })
+    return shoes2;
   } 
 
   listOfInventory() {
-    const inventoryList = this.state.shoesInBasket.map(inventory => {
-      return <InventoryToBuy 
-      id={inventory.id}
-      key={inventory.id}
-      name={inventory.name}
-      producer={inventory.producer}
-      description={inventory.description}
-      price={inventory.price}
-      picture={inventory.picture}/>
-    })
-    return inventoryList;
+      const inventoryList = this.state.shoesFinal.map(item => {
+        return <InventoryToBuy 
+        id={item.idShoe}
+        key={item.idUnique}
+        name={item.name}
+        producer={item.producer}
+        description={item.description}
+        price={item.price}
+        picture={item.picture}/>
+      })
+      return inventoryList;
   }
 
   render() {

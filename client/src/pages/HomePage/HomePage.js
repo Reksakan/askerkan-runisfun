@@ -126,7 +126,7 @@ class HomePage extends React.Component {
       return <Card 
       className="card-container"
       id = {shoe.id}
-      key = {shoe.id}
+      key = {shoe.id} //сделат разными. потому что сейчас дублируется. добавить что-нибудь в название
       name={shoe.name}
       gender={shoe.gender}
       category={shoe.categories}

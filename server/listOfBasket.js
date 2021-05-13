@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const basketDataFile = './Data/dataBasket.json';
-const dataOfBasket = require(basketDataFile);
 
 router.get('/', (request, response) => {
+  const dataOfBasket = JSON.parse(fs.readFileSync(basketDataFile, 'utf8'));
   return response.status(200).json(dataOfBasket);
 }); 
-
 
 router.post('/', (request, response) => {
   let newBasket = request.body;
@@ -19,8 +18,6 @@ router.post('/', (request, response) => {
     fs.writeFileSync(basketDataFile, JSON.stringify(newDataOfBasket))
   }
 })
-
-
 
 // router.post('/', (request, response) => {
 //   let newBasket = request.body; 
