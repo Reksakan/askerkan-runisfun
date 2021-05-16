@@ -4,6 +4,15 @@
 
 .body-basket {
   padding-top: $padding-top;
+  padding-bottom: 10rem;
   @include flex-col;
+  @include tablet {
+    @include flex-row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
+// .body-button {
+//   padding-top: 15rem;
+// }
 

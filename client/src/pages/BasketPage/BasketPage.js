@@ -2,17 +2,21 @@ import React from 'react';
 import axios from 'axios';
 import './BasketPage.scss'
 import InventoryToBuy from './components/InventoryToBuy';
-import { shoesChosenIDs } from './BasketPageAdd';
 
 const API_URL = process.env.REACT_APP_API_URL; 
 
 class BasketPage extends React.Component {
-  state = {
-    shoesInBasket: [], //just 3 parameters
-    shoesInitial: [],
-    shoesFinal: []
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      shoesInBasket: [], //just 3 parameters
+      shoesInitial: [],
+      shoesFinal: []
+    };  
+    this.deleteShoe = this.deleteShoe.bind(this);
+  }
+  
+  
   fetchShoesToBuy() {
     axios
     .get(`${API_URL}/basket`)
@@ -40,15 +44,10 @@ class BasketPage extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.shoesInitial !== this.state.shoesInitial) {
       const outPut = this.filterShoes();
-      console.log('outPut:', outPut)
-      console.log('prevState.shoesInitial: ',  prevState.shoesInitial)
-      console.log('state.shoesInitial: ', this.state.shoesInitial)
       this.setState({
         shoesFinal: outPut
-      })
-      
+      })      
     }
-    console.log('this.state.shoesFinal in componentDidUpdate: ', this.state.shoesFinal)
   }
 
   filterShoes() {    
@@ -62,23 +61,51 @@ class BasketPage extends React.Component {
     return shoes2;
   } 
 
-  listOfInventory() {
-      const inventoryList = this.state.shoesFinal.map(item => {
-        return <InventoryToBuy 
-        id={item.idShoe}
-        key={item.idUnique}
-        name={item.name}
-        producer={item.producer}
-        description={item.description}
-        price={item.price}
-        picture={item.picture}/>
+  deleteShoe(idUnique) {
+    axios
+    .delete(`${API_URL}/basket/${idUnique}`)
+    .then(response => {
+      axios
+      .get(`${API_URL}/basket`)
+      .then(res => {
+        this.setState({
+          shoesInBasket: res.data
+        })
       })
-      return inventoryList;
+      .then(resp=> {
+        const outPut = this.filterShoes();
+        this.setState({
+          shoesFinal: outPut
+        })
+      })
+      .catch(error => {
+        window.alert(error)
+      })
+    })
+    .catch(error => {
+      window.alert(error)
+    })
+  }
+
+  listOfInventory() {
+    const inventoryList = this.state.shoesFinal.map(item => {
+      return <InventoryToBuy 
+      id={item.idShoe}
+      idUnique={item.idUnique}
+      name={item.name}
+      producer={item.producer}
+      description={item.description}
+      price={item.price}
+      picture={item.picture}
+      onClick={this.deleteShoe}/>
+    })
+    return inventoryList;
   }
 
   render() {
     return (
       <>
+        <button className="body-button">BUY</button>
         <div className="body-basket">{this.listOfInventory()}</div>
       </>
       

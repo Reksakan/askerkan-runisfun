@@ -99,27 +99,6 @@ class HomePage extends React.Component {
       shoesFiltered: shoesFiltered
     })
   }
-  
-  // addShoe=(e)=>{
-  //   e.preventDefault();
-  //   const shoe = this.state.shoesFiltered.filter(shoe => {if (shoe.id === e.target.value) return shoe})[0];
-  //   const shoeToBuy = {
-  //     "id": shoe.id,
-  //     "name": shoe.name,
-  //     "gender": shoe.gender,
-  //     "producer" : shoe.producer,
-  //     "price" : shoe.price,
-  //     "description": shoe.description,
-  //     "categories": shoe.categories,
-  //     "link" : shoe.link,
-  //     "picture" : shoe.picture,
-  //     "types" : []
-  //   }
-  //   axios
-  //     .post(`${API_URL}/basket/`, shoeToBuy)
-  //     .then((res) => {console.log('res.data from server: ', res.data)})
-  //     .catch(error => {window.alert(error)})
-  // }
 
   listOfShoes() {
     const shoesList = this.state.shoesFiltered.map(shoe => {
