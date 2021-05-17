@@ -200,8 +200,6 @@ class Filter extends React.Component {
       if (this.state.shoesCategoriesFiltered !== undefined 
         && this.state.shoesCategoriesFiltered.length !== null) 
         {categories = this.state.shoesCategoriesFiltered.map(item => item.value)} 
-      
-        // colours = this.state.shoesColoursFiltered;
 
         shoesModelsPrevFiltered = shoesModels.filter(shoe => (
         (gender.length == 0 || gender.includes(shoe.company)) 
@@ -209,7 +207,6 @@ class Filter extends React.Component {
         && (categories.length == 0 || categories.includes(shoe.category))));
 
       shoesModelsPostFiltered = shoesModelsPrevFiltered.map(function(item) {return {'value': item.label, 'label': item.label}})  
-      // Сюда вставить цвета
 
       this.setState({
         shoesModelsToFilter: shoesModelsPostFiltered
@@ -218,11 +215,6 @@ class Filter extends React.Component {
   }
 
   componentDidMount(){
-    // let modelsToFilter = [];
-    // if((this.state.shoesManufacturersFiltered === undefined || this.state.shoesManufacturersFiltered.length === 0) //Do I need to check this condition? 
-    //   && ((this.state.shoesCategoriesFiltered === undefined || this.state.shoesCategoriesFiltered.length === 0)))   //Do I need to check this condition? Cause by default 
-    //   {modelsToFilter = shoesModels};
-  
       const URL = qs.parse(this.props.location.search, { comma: true, ignoreQueryPrefix: true });
       const arrGender = URL.gender === undefined ? [] : Array.isArray(URL.gender) ? URL.gender : [URL.gender];
       const arrProducers = URL.producer === undefined ? [] : Array.isArray(URL.producer) ? URL.producer : [URL.producer];

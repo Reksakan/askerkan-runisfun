@@ -57,7 +57,7 @@ class ProductFilter extends React.Component {
     
     const productTypeChosen = productTypesFiltered.map(item => item.idInt);
     if (productTypeChosen.length === 1) {
-      const productBought = {idUnique: uuidv4(), idShoe: this.state.product.id, idInt: productTypeChosen[0]} ;
+      const productBought = {idUnique: uuidv4(), idShoe: this.state.product.id, idInt: productTypeChosen[0], qtyToBuy: 1} ;
       axios
       .post(`${API_URL}/basket`, productBought)
       .then((res) => {console.log('res.data from server: ', res.data)})
