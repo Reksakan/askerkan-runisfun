@@ -60,7 +60,8 @@ class BasketPage extends React.Component {
         costShoesInBasket: costShoesInBasket,
         hstShoesInBasket: hstShoesInBasket,
         totalCostShoesInBasket: totalCostShoesInBasket
-      }) 
+      })
+      console.log('this.state.shoesInitial: ', this.state.shoesInitial) 
     }
   }
 
@@ -109,21 +110,37 @@ class BasketPage extends React.Component {
   }
 
   buyShoes = (e) => {
-    let shoeModels = this.state.shoesInBasket.map(shoe => { return shoe.idShoe})
-    console.log('shoeModels: ', shoeModels);
-    let shoeVariances = this.state.shoesInBasket.map(shoe => {return shoe.idInt})
-    console.log('shoeVariances: ', shoeVariances);
+    if (this.state.shoesInBasket.length === 0) {
+      window.alert('Please choose the product to buy')
+    } else {
+      axios
+      .put(`${API_URL}/`, this.state.shoesInBasket)
+      .then((response) => {
+        console.log('Basket shoes sent to the server: ', response.data)})
+      .catch(error => {window.alert(error)})
+
+    }
     
-    let shoesStockUpdate = this.state.shoesInitial.map(shoe => {
-      if (shoeModels.includes(shoe.id)) {
-        shoe.types.map(item => {
-          if(shoeVariances.includes(item.idInt)) {
-            item.quantity = item.quantity - 1
-          } return item;
-        }) 
-      } return shoe
-    })
-    return console.log('shoesStockUpdate: ', shoesStockUpdate)
+    // let shoeModels = this.state.shoesInBasket.map(shoe => { return shoe.idShoe})
+    // console.log('shoeModels: ', shoeModels);
+    // let shoeVariances = this.state.shoesInBasket.map(shoe => {return shoe.idInt})
+    // console.log('shoeVariances: ', shoeVariances);
+    
+    // let shoesStockUpdate = this.state.shoesInitial.map(shoe => {
+    //   if (shoeModels.includes(shoe.id)) {
+    //     shoe.types.map(item => {
+    //       if(shoeVariances.includes(item.idInt)) {
+    //         if (parseInt(item.quantity) === 0) {
+    //           alert("Sorry, but there is no shoes on the stock");
+    //           return;
+    //         } else {
+    //           item.quantity = item.quantity - 1
+    //         }
+    //       } return item;
+    //     }) 
+    //   } return shoe
+    // })
+    // return console.log('shoesStockUpdate: ', shoesStockUpdate)
   }
 
   listOfInventory() {
@@ -137,6 +154,8 @@ class BasketPage extends React.Component {
       description={item.description}
       price={item.price}
       quantity={item.types.quantity}
+      size={item.types.size}
+      colour={item.types.colour}
       picture={item.picture}
       onClick={this.deleteShoe}/>
     })

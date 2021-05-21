@@ -7,3 +7,6 @@ SKIP_PREFLIGHT_CHECK=true
 Developer
 REACT_APP_API_URL=http://localhost:8080
 SKIP_PREFLIGHT_CHECK=true
+
+
+"picture" : "/pictures/shoes/Salomon/Running/Sonic-3-confidence/salomon-running-sonic_3_confidence_blue.jpg",

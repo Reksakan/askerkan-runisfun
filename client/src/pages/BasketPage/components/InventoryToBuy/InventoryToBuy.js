@@ -12,6 +12,11 @@ class InventoryToBuy extends React.Component {
             <span> / </span>
             <span>{this.props.name}</span>
           </p>
+          <p>
+            <span>Colour: {this.props.colour}</span>
+            <span> / </span>
+            <span>Size: {this.props.size}</span>
+          </p>
           <p className="inven__bold">{this.props.price}</p>
           <p className="inven__details-text">{this.props.description}</p>
           <p>Available quantity: {this.props.quantity}</p>

@@ -8,7 +8,7 @@ class Footer extends React.Component {
       <div className="ground">
               <h4>Contacts</h4>
               <p>Asker Alshanbayev</p>
-              <p>aalshanbayev@gmail.com</p>
+              <p>asker.ka@hotmail.com</p>
       </div>
     )
   }

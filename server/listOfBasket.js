@@ -11,7 +11,7 @@ router.get('/', (request, response) => {
 router.post('/', (request, response) => {
   let newBasket = request.body;
   let oldBasket = [];
-  if (newBasket) {
+  if (newBasket) {  
     oldBasket = JSON.parse(fs.readFileSync(basketDataFile, 'utf8'));
     let newDataOfBasket = [...oldBasket, newBasket];
     fs.writeFileSync(basketDataFile, JSON.stringify(newDataOfBasket))
@@ -20,7 +20,6 @@ router.post('/', (request, response) => {
 
 router.delete('/:idUnique', (request, response) => {
   basket = JSON.parse(fs.readFileSync(basketDataFile, 'utf8'));
-  // let newBasket = [];
   if(basket.find(item => { return item.idUnique === request.params.idUnique})) {
     let index = basket.findIndex(index => {return index.idUnique === request.params.idUnique})
     basket.splice(index, 1);
