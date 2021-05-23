@@ -28,8 +28,6 @@ class InventoryToBuy extends React.Component {
               <button className="qty-input__btn" type="button" onClick={()=> this.props.inClickQtyUp(this.props.idUnique)}>&#xff0b;</button>
             </div>
           </div>
-          
-
         </div>
         <div className="inven__button">
           <button className="inven__del" type="button" onClick={()=> this.props.onClickDelete(this.props.idUnique)}></button>

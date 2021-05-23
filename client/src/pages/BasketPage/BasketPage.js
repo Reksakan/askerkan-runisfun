@@ -175,13 +175,12 @@ class BasketPage extends React.Component {
     return (
       <>
         <div className="body-all">
-          <div className="body-basket">{this.listOfInventory()}</div>
           <div className="body-buy">
-            <div>
+            <p>
               <button className="body-button" type="button" value="submit" onClick={this.buyShoes}>BUY</button>
-            </div>
+            </p>
             <div className="body-buy__sum">
-              <h1>ORDER SUMMARY</h1>
+              <h1 className="body-buy__header">ORDER SUMMARY</h1>
               <div className="body-buy__items">
                 <div>{this.state.qtyShoesInBasket} ITEMS</div>
                 <div>$ {this.state.costShoesInBasket}</div>
@@ -200,6 +199,7 @@ class BasketPage extends React.Component {
               </div>
             </div>
           </div>
+          <div className="body-basket">{this.listOfInventory()}</div>
         </div>
       </>
       
