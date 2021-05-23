@@ -2,6 +2,7 @@
 @import '../../../../partials/mixins';
 @import '../../../../partials/fonts'; 
 
+
 .inven {
   @include flex-col;
   width: 30rem;
@@ -44,9 +45,9 @@
     }
     
   }
-  &__details-text {
-    border: 1px solid gray;
-  }
+  // &__details-text {
+  //   border: 1px solid gray;
+  // }
   &__bold {
     font-size: 1.5rem;
     font-weight: bold;
@@ -89,4 +90,36 @@
 
 .small-x:after {
   content: "\d7";
+}
+
+.margin-bottom {
+  margin-bottom: 0;
+}
+
+.qty {
+  // @include flex-row;
+  display: flex;
+
+}
+
+.qty-input {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); //https://codepen.io/mystroken/pen/Moraab
+  border-radius: 3px;
+  &__scr {
+    width: 2rem;
+    text-align: center;
+  }
+  &__btn {
+    user-select: none;
+    outline: none;
+    &:hover{
+      background: darken(#f3f3f3, 10%);
+      color: darken(#888, 20%)
+    }
+  }
+}
+
+.qty-text {
+  vertical-align: middle;
+  margin-right: 0.5rem;
 }

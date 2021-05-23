@@ -120,27 +120,32 @@ class BasketPage extends React.Component {
       .catch(error => {window.alert(error)})
 
     }
-    
-    // let shoeModels = this.state.shoesInBasket.map(shoe => { return shoe.idShoe})
-    // console.log('shoeModels: ', shoeModels);
-    // let shoeVariances = this.state.shoesInBasket.map(shoe => {return shoe.idInt})
-    // console.log('shoeVariances: ', shoeVariances);
-    
-    // let shoesStockUpdate = this.state.shoesInitial.map(shoe => {
-    //   if (shoeModels.includes(shoe.id)) {
-    //     shoe.types.map(item => {
-    //       if(shoeVariances.includes(item.idInt)) {
-    //         if (parseInt(item.quantity) === 0) {
-    //           alert("Sorry, but there is no shoes on the stock");
-    //           return;
-    //         } else {
-    //           item.quantity = item.quantity - 1
-    //         }
-    //       } return item;
-    //     }) 
-    //   } return shoe
-    // })
-    // return console.log('shoesStockUpdate: ', shoesStockUpdate)
+  }
+
+  qtyUp = (idUnique) => {
+    const shoes = this.state.shoesFinal.map(shoe => {
+      if(shoe.idUnique === idUnique) {
+        shoe.qtyToBuy = shoe.qtyToBuy < shoe.types.quantity ? ++shoe.qtyToBuy : shoe.qtyToBuy;
+      }
+      return shoe;
+    });
+    console.log('shoes: ', shoes)
+    this.setState({
+      shoesFinal: shoes
+    })
+  }
+
+  qtyDown = (idUnique) => {
+    const shoes = this.state.shoesFinal.map(shoe => {
+      if(shoe.idUnique === idUnique) {
+        shoe.qtyToBuy = shoe.qtyToBuy > 1 ? --shoe.qtyToBuy : shoe.qtyToBuy;
+      }
+      return shoe;
+    });
+    console.log('shoes: ', shoes)
+    this.setState({
+      shoesFinal: shoes
+    })
   }
 
   listOfInventory() {
@@ -157,7 +162,11 @@ class BasketPage extends React.Component {
       size={item.types.size}
       colour={item.types.colour}
       picture={item.picture}
-      onClick={this.deleteShoe}/>
+      qtyToBuy={item.qtyToBuy}
+      onClickDelete={this.deleteShoe}
+      inClickQtyUp={this.qtyUp}
+      inClickQtyDown={this.qtyDown}
+      />
     })
     return inventoryList;
   }

@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const listOfShoesVariances = require('./Data/dataShoesVariances.json');
-const listOfShoesVariancesNew = './Data/dataShoesVariancesNew.json';
+const listOfShoesVariances = './Data/dataShoesVariances.json';
+
 
 router.get('/', (request, response) => {
-  return response.status(200).json(listOfShoesVariances);
+  const listOfShoes = JSON.parse(fs.readFileSync(listOfShoesVariances, 'utf8'));
+  return response.status(200).json(listOfShoes);
 }); 
 
 router.get('/:currentShoeId', (request, response) => {
-  return response.status(200).json(listOfShoesVariances.filter(currentShoe => {
+  const listOfShoes = JSON.parse(fs.readFileSync(listOfShoesVariances, 'utf8'));
+  return response.status(200).json(listOfShoes.filter(currentShoe => {
     return currentShoe.id === request.params.currentShoeId;
   }));
 })
@@ -22,7 +24,8 @@ router.put('/', (request, response) => {
   let shoeVariances = request.body.map(shoe => {return shoe.idInt})
   console.log('shoeModels: ', shoeModels);        //DELETE
   console.log('shoeVariances: ', shoeVariances);        //DELETE
-  let newListOfShoes = listOfShoesVariances;
+  
+  let newListOfShoes = JSON.parse(fs.readFileSync(listOfShoesVariances, 'utf8'));
   request.body.forEach(element => {
     let shoeToEdit = newListOfShoes.filter(shoe => {
       if (element.idShoe.includes(shoe.id)) {
@@ -36,11 +39,11 @@ router.put('/', (request, response) => {
     })
   });
   try {
-    fs.writeFileSync(listOfShoesVariancesNew, JSON.stringify(newListOfShoes));
+    fs.writeFileSync(listOfShoesVariances, JSON.stringify(newListOfShoes));
 
   } catch(error) {
     console.log(error)
   }
-  let newShoesList = JSON.parse(fs.readFileSync(listOfShoesVariancesNew, 'utf8'));
+  let newShoesList = JSON.parse(fs.readFileSync(listOfShoesVariances, 'utf8'));
   return response.status(200).json(newShoesList)
 })
