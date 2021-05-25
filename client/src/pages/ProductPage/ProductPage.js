@@ -45,7 +45,6 @@ class ProductPage extends React.Component {
     this.fetchShoe(urlProduct);
   }
   
-  
   render () {
     return (
       <div className="productPage">

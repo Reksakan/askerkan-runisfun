@@ -116,9 +116,13 @@ class BasketPage extends React.Component {
       axios
       .put(`${API_URL}/`, this.state.shoesInBasket)
       .then((response) => {
-        console.log('Basket shoes sent to the server: ', response.data)})
+        console.log('Basket shoes sent to the server: ', response.data)
+        window.alert('Thank you for your purchase!')
+        this.setState({
+          shoesFinal: []
+        })
+      })      
       .catch(error => {window.alert(error)})
-
     }
   }
 

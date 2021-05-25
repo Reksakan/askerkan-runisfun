@@ -127,12 +127,9 @@ class Filter extends React.Component {
     this.props.history.push(str);
   }
 
-
-
 //Filter by size will be realized in Stage II
   colourList() {
     const shoesByColours = this.state.shoesColoursFiltered
-    // console.log('shoesColours in colourList(): ', shoesByColours);
     const colourVariances = shoesByColours.map(colour => {
       return (
         <div className="by-colour__colour">
