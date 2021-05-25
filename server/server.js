@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const axios = require('axios');
-const listOfShoesVariances = require('./Data/listOfShoesVariances'); 
+const listOfShoesVariances = require('./listOfShoesVariances'); 
 // const listOfCompliance = require('./listOfCompliance');
-const listOfBasket = require('./Data/dataShoesList.json');
+const listOfBasket = require('./listOfBasket');
 
 
 require('dotenv').config();

@@ -1,4 +1,5 @@
 Changes in .env file Client
+
 Production
 REACT_APP_API_URL = https://runisfun-server.herokuapp.com
 SKIP_PREFLIGHT_CHECK=true
@@ -6,6 +7,8 @@ SKIP_PREFLIGHT_CHECK=true
 Developer
 REACT_APP_API_URL=http://localhost:8080
 SKIP_PREFLIGHT_CHECK=true
+
+
 
 Changes in .env file Server
 

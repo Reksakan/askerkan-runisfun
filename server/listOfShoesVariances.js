@@ -1,8 +1,7 @@
-const { request } = require('express');
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const listOfShoesVariances = require('./Data/dataShoesVariances.json');
+const listOfShoesVariances = './Data/dataShoesVariances.json';
 
 
 
