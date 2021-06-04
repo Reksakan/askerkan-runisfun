@@ -20,18 +20,19 @@ class BasketPage extends React.Component {
       totalCostShoesInBasket: ""
     };  
     this.deleteShoe = this.deleteShoe.bind(this);
+    this.fetchShoesToBuy = this.fetchShoesToBuy.bind(this);
   }
   
   
   fetchShoesToBuy() {
     axios
-    .get(`${API_URL}/basket`)
-    .then(response => {
-      this.setState({
-        shoesInBasket: response.data
+      .get(`${API_URL}/basket?${new Date().getTime()}`)
+      .then(response => {
+        this.setState({
+          shoesInBasket: response.data
+        })
       })
-    })
-    .catch(error => {window.alert(error)})
+      .catch(error => {window.alert(error)})
     
     axios
     .get(`${API_URL}/`)
@@ -50,7 +51,7 @@ class BasketPage extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.shoesInitial !== this.state.shoesInitial) {
       const outPut = this.filterShoes();
-      console.log('outPut: ', outPut);
+      // console.log('outPut: ', outPut);
       const costShoesInBasket = outPut.reduce((acc, item) => {return acc + parseInt(item.price.substring(1))}, 0);
       const hstShoesInBasket = Math.round(costShoesInBasket * 0.13);
       const totalCostShoesInBasket = costShoesInBasket + hstShoesInBasket;
@@ -66,10 +67,17 @@ class BasketPage extends React.Component {
   }
 
   filterShoes() {    
+    console.log('this.state.shoesInBasket in filterShoes: ', this.state.shoesInBasket)
     const shoes1 = this.state.shoesInBasket.map(shoe => {
-      return {idUnique: shoe.idUnique, idIntChosen: shoe.idInt, qtyToBuy: shoe.qtyToBuy, ...this.state.shoesInitial.find(t => t.id === shoe.idShoe)}
+      return {
+        idUnique: shoe.idUnique, 
+        idIntChosen: shoe.idInt, 
+        qtyToBuy: shoe.qtyToBuy, 
+        ...this.state.shoesInitial.find(t => t.id === shoe.idShoe)
+      }
     })
     const shoes2 = shoes1.map(shoe => {
+      console.log('shoe2 in filtershoes: ', shoe) //DELETE
       shoe.types = shoe.types.find(type => type.idInt === shoe.idIntChosen)
       return (shoe);
     })
@@ -78,52 +86,69 @@ class BasketPage extends React.Component {
 
   deleteShoe(idUnique) {
     axios
-    .delete(`${API_URL}/basket/${idUnique}`)
-    .then(response => {
-      axios
-      .get(`${API_URL}/basket`)
-      .then(res => {
-        this.setState({
-          shoesInBasket: res.data
+      .delete(`${API_URL}/basket/${idUnique}`)
+      .then(response => {
+        axios
+        .get(`${API_URL}/basket`)
+        .then(res => {
+          this.setState({
+            shoesInBasket: res.data
+          })
         })
-      })
-      .then(resp=> {
-        const outPut = this.filterShoes();
-        const costShoesInBasket = outPut.reduce((acc, item) => {return acc + parseInt(item.price.substring(1))}, 0);
-        const hstShoesInBasket = Math.round(costShoesInBasket * 0.13); 
-        const totalCostShoesInBasket = costShoesInBasket + hstShoesInBasket;
-        this.setState({
-          shoesFinal: outPut,
-          qtyShoesInBasket: outPut.length,
-          costShoesInBasket: costShoesInBasket,
-          hstShoesInBasket: hstShoesInBasket,
-          totalCostShoesInBasket: totalCostShoesInBasket
+        .then(resp=> {
+          const outPut = this.filterShoes();
+          const costShoesInBasket = outPut.reduce((acc, item) => {return acc + parseInt(item.price.substring(1))}, 0);
+          const hstShoesInBasket = Math.round(costShoesInBasket * 0.13); 
+          const totalCostShoesInBasket = costShoesInBasket + hstShoesInBasket;
+          this.setState({
+            shoesFinal: outPut,
+            qtyShoesInBasket: outPut.length,
+            costShoesInBasket: costShoesInBasket,
+            hstShoesInBasket: hstShoesInBasket,
+            totalCostShoesInBasket: totalCostShoesInBasket
+          })
+        })
+        .catch(error => {
+          window.alert(error)
         })
       })
       .catch(error => {
         window.alert(error)
       })
-    })
-    .catch(error => {
-      window.alert(error)
-    })
   }
 
   buyShoes = (e) => {
-    if (this.state.shoesInBasket.length === 0) {
+    if (this.state.shoesFinal.length === 0) {
       window.alert('Please choose the product to buy')
     } else {
-      axios
-      .put(`${API_URL}/`, this.state.shoesInBasket)
-      .then((response) => {
-        console.log('Basket shoes sent to the server: ', response.data)
-        window.alert('Thank you for your purchase!')
-        this.setState({
-          shoesFinal: []
+        const shoesBought = this.state.shoesFinal.map(shoe=> {
+          return {
+            idUnique: shoe.idUnique, 
+            id: shoe.id, 
+            idType: shoe.idIntChosen, 
+            qtyToBuy: shoe.qtyToBuy, 
+            qtyInStock: shoe.types.quantity
+          }
         })
-      })      
-      .catch(error => {window.alert(error)})
-    }
+        axios
+        .put(`${API_URL}/`, shoesBought)
+        .then((response) => {
+          // window.alert('Thank you for your purchase!')
+          console.log('response: ', response.data.msg)
+          window.alert(response.data.msg)
+          this.setState({
+            shoesFinal: [], //here should be shoesInBasket
+            shoesInBasket: []  
+          })
+        })      
+        .catch(error => {window.alert(error)})
+        .then(
+          axios
+            .post(`${API_URL}/basket`, {empty: 'empty'})
+            .then((res) => {console.log('res.data from server: ', res.data)})
+            .catch(error => {window.alert(error)})
+        )
+      }
   }
 
   qtyUp = (idUnique) => {
@@ -133,7 +158,7 @@ class BasketPage extends React.Component {
       }
       return shoe;
     });
-    console.log('shoes: ', shoes)
+    console.log('shoes in this.stateshoesFinal: ', shoes)
     this.setState({
       shoesFinal: shoes
     })
@@ -146,7 +171,7 @@ class BasketPage extends React.Component {
       }
       return shoe;
     });
-    console.log('shoes: ', shoes)
+    console.log('shoes in this.stateshoesFinal: ', shoes)
     this.setState({
       shoesFinal: shoes
     })

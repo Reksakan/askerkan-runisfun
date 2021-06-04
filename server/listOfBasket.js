@@ -11,11 +11,15 @@ router.get('/', (request, response) => {
 router.post('/', (request, response) => {
   let newBasket = request.body;
   let oldBasket = [];
-  if (newBasket) {  
-    oldBasket = JSON.parse(fs.readFileSync(basketDataFile, 'utf8'));
-    let newDataOfBasket = [...oldBasket, newBasket];
-    fs.writeFileSync(basketDataFile, JSON.stringify(newDataOfBasket))
-  }
+  console.log('newBasket: ', newBasket)
+  if (newBasket.empty === 'empty') {  
+    console.log('Working!')
+    fs.writeFileSync(basketDataFile, JSON.stringify([]))
+  } else {
+      oldBasket = JSON.parse(fs.readFileSync(basketDataFile, 'utf8'));
+      let newDataOfBasket = [...oldBasket, newBasket];
+      fs.writeFileSync(basketDataFile, JSON.stringify(newDataOfBasket))
+    }  
 })
 
 router.delete('/:idUnique', (request, response) => {
