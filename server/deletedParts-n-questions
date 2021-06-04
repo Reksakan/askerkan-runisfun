@@ -1,125 +1,22 @@
-filterShoes() {
-    const URL = qs.parse(this.props.location.search, { comma: true, ignoreQueryPrefix: true });
-    //console.log('URL: ', URL);                                                              //DELETE
-    const arrProducers = URL.producer === undefined ? [] : Array.isArray(URL.producer) ? URL.producer : [URL.producer];
-    const arrCategories = URL.categories === undefined ? [] : Array.isArray(URL.categories) ? URL.categories : [URL.categories]; 
-    const arrModels = URL.name === undefined ? [] : Array.isArray(URL.name) ? URL.name : [URL.name];
-    const arrColours = URL.colour === undefined ? [] : Array.isArray(URL.colour) ? URL.colour : [URL.colour];
-      //const arrSizes = URL.size === undefined ? [] : Array.isArray(URL.size) ? URL.size : [URL.size];
-    
-    console.log('---Start---');
-    console.log('this.state.shoes', this.state.shoes);
-    console.log('arrProducers: ', arrProducers);                                              //DELETE
-    console.log('arrCategories: ', arrCategories);
-    console.log('arrModels: ', arrModels);
-    console.log('arrColours: ', arrColours);
-    console.log('---END---');
-    
-    let shoesFiltered=[];
-    if (arrProducers.length < 1 && arrCategories.length < 1 && arrModels.length < 1 && arrColours.length < 1) {
-      shoesFiltered = this.state.shoes;
-    }
-    else {
-      shoesFiltered = (this.state.shoes.filter(shoe => { 
-        const typeColour = shoe.types.map(type => type.colour); 
-        const typeSize = shoe.types.map(type => type.size);
-        return (                                                                          //how to make array intersection
-          (arrProducers.length > 0 || arrProducers.includes(shoe.producer.toLowerCase()))
-          && (arrCategories.length > 0 || arrCategories.includes(shoe.categories)) 
-          && (arrModels.length > 0 || arrModels.includes(shoe.name))
-          //&& (arrColours.length > 0 || arrColours.includes(shoe.type.map(colour => types.colour))) 
-        )
-      }))
-        //  && (arrColours == "" || arrColours.includes(shoe.types.colour))
-      
-    }
-    
-    // if (arrProducers !== undefined || arrProducers !== null || arrProducers !== '') {
-    //   shoesFiltered = this.state.shoes.filter(shoe => (
-    //     (arrProducers.length === 0 || arrProducers.includes(shoe.producer.toLowerCase()))
-    //   ))
-    // }
-    console.log('shoesFiltered: ', shoesFiltered);                                                                              //DELETE
-    
-    this.setState({
-      shoesFiltered: shoesFiltered
-    })
-  }
+Changes in .env file Client
+
+Production
+REACT_APP_API_URL = https://runisfun-server.herokuapp.com
+SKIP_PREFLIGHT_CHECK=true
+
+Developer
+REACT_APP_API_URL=http://localhost:8080
+SKIP_PREFLIGHT_CHECK=true
 
 
 
-Question & Bugs: 
-1. ComponentDidUpdate starts working from second change. !!! Debuged
-2. If delete any of first three filters and update page then some space remind in filters (like empty chosen item)
-3. A lot of errors in console
-4. Colour filter doesn't work properly in URL. 
-5. Size filter doesn't work at all.
-6. Styling (SCSS) has inplemented only for 5%.
+Changes in .env file Server
+
+Production
+PORT=https://runisfun-server.herokuapp.com
+
+Developer
+PORT=8080
 
 
-        (arrProducers === " " || arrProducers.includes(shoe.producer.toLowerCase()))
-        && (arrCategories === " " || arrCategories.includes(shoe.categories))
-        // && (arrModels === " " || arrModels.includes(shoe.name))
-        // && (arrColours === "" || arrColours.includes(shoe.colour))
-
-
-
-From dataBasket.json
-
-[
-  {
-    "id": "SALRUN123450002",
-    "name": "SONIC 3 ACCELERATE",
-    "producer" : "Salomon",
-    "price" : "$350",
-    "description": "The lightweight SONIC 3 ACCELERATE training shoe is packed with features designed to optimize your speed training: Optivibe reduces vibrations to limit muscle fatigue, a geometric decoupling axis promotes a quick forward transition and road-specific Sensifit fits your foot like a glove.",
-    "categories": "running",
-    "link" : "https://www.salomon.com/en-ca/shop/product/sonic-3-accelerate.html#color=18034",
-    "types":
-    {
-      "idInt" : "SALRUN123450002INT01",
-      "gender" : "man",
-      "colour" : "black",
-      "size": "9",
-      "quantity": "1",
-      "lastOrdered": "12/02/2020"
-    }
-  }
-]
-
-
-
-Footer
-<footer class="ground">
-       <section className="ground__head">
-            <div className="ground__head-icon">
-                <h2 className="ground__head-text">Get In Touch</h2>
-                <div className="ground__icons">
-                    <a href="https://instagram.com/"><img className="ground__icon-img" src="./assets/Icons/PNG/Icon-instagram.png" alt="instagram"></a>
-                    <a href="https://facebook.com/"><img className="ground__icon-img" src="./assets/Icons/PNG/Icon-facebook.png" alt="facebook"></a>
-                    <a href="https://twitter.com/"><img className="ground__icon-img" src="./assets/Icons/PNG/Icon-twitter.png" alt="twitter"></a>
-                </div>
-            </div>
-            <a className="ground__logo" href="index.html">
-                <img className="ground__logo--width" src="./assets/Logo/Logo-bandsite.svg" alt="logo">
-            </a>
-        </section>
-        <section className="ground__contacts">
-            <div className="ground__card">
-                <h4 className="ground__person">Richar Rovner<br>The Bees Knees Management</h4>
-                <div className="ground__address">460 King Street West<br>Toronto, Ontario M5V1L7</div>
-                <div clclassNameass="ground__email">info@thebeesknees.com</div>
-            </div>
-            <div className="ground__card">
-                <h4 className="ground__person">Marsha Vlasic<br>Artist Group International</h4>
-                <div className="ground__address">Booking<br>Toronto, Ontario M5V1L7</div>
-                <div className="ground__email">marsha.vlasic@artistgrp.com</div>
-            </div>
-            <div className="ground__card">
-                <h4 className="ground__person">Richar Rovner<br>The Bees Knees Management</h4>
-                <div className="ground__address">460 King Street West<br>Toronto, Ontario M5V1L7</div>
-                <div className="ground__email">RLW@wmeentertainment.com</div>
-            </div>
-        </section>
-        <p className="copyright">Copyright The Bees Knees 2018 All Rights Reserved</p>
-      </footer>
+"picture" : "/pictures/shoes/Salomon/Running/Sonic-3-confidence/salomon-running-sonic_3_confidence_blue.jpg",

@@ -2,21 +2,16 @@
 @import '../../partials/mixins';
 @import '../../partials/fonts'; 
 
-
 .body {
- @include flex-col;
+  @include flex-col;
   @include tablet {
-    @include flex-row;
     padding-top: $padding-top;
-    margin-left: 2rem;
-    &__shoes {
-      display: flex;
-      justify-content: center;
-      @include tablet {
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        margin-right: 2rem;
-      }
-    }
+    @include flex-row;
+  }
+  &__shoes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 10rem;
   }
 }

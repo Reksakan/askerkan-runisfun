@@ -1,7 +1,7 @@
 @import './variables.scss'; 
 
 @mixin mobile {
-    @media screen and (min-width: $mobile-breakpoit) {
+    @media screen and (min-width: $mobile-breakpoint) {
         @content;
     }
 }

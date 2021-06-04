@@ -31,6 +31,7 @@ class ProductPage extends React.Component {
       id={shoe.id}
       key={shoe.id}
       name={shoe.name}
+      gender={shoe.gender}
       producer={shoe.producer}
       description={shoe.description}
       price={shoe.price}
@@ -41,17 +42,15 @@ class ProductPage extends React.Component {
 
   componentDidMount () {
     const urlProduct = qs.parse(this.props.location.search, { comma: true, ignoreQueryPrefix: true });
-    console.log('urlProduct: ', urlProduct);                                                               //DELETE
     this.fetchShoe(urlProduct);
   }
   
-  
   render () {
     return (
-      <div className="body">
-        <div>
-          <div>{this.shoeCard()}</div>
-        </div>
+      <div className="productPage">
+        <div>{this.shoeCard()}</div>
+        {/* <div className="productPage__sort">LEFT SIDE FILTER</div> */}
+        <img className="productPage__sort" src="/pictures/sports-equipment_38359-143.jpg" alt="sports"></img>
         <ProductFilter />
       </div>
     )

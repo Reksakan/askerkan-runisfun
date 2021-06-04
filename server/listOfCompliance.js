@@ -8,7 +8,7 @@ router.get('/', (request, response) => {
   return response.status(200).json(dataOfCompliance);
 }); 
 
-router.post('/', (request, response) => {
+router.post('/compliance', (request, response) => {
   const newCompliance = request.body;                                               //delete
   console.log('request.body', request.body);
   if (

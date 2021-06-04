@@ -1,0 +1,8 @@
+DATABASE_URL
+postgres://sukvctvrecmhag:3d4e93ce3d329376f395f43f90b1021526864d3694417376bbebdf1718e3ea3c@ec2-54-205-183-19.compute-1.amazonaws.com:5432/d58u62d809jm7t
+
+REACT_APP_API_URL
+https://runisfun-server.herokuapp.com
+
+SKIP_PREFLIGHT_CHECK
+true

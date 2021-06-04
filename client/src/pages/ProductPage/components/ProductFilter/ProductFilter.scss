@@ -3,24 +3,38 @@
 @import '../../../../partials/fonts';
 
 .filter-by {
+  width: 100%;
+  @include tablet {
+    width: 20vw;
+  }
   &__gender {
-    // border: 1px solid blue;
-    width: 20rem;
+    border: 1px solid blue;
+    width: 100%;
+    @include tablet {
+      width: 20vw;
+    }
   }
   &__button-product {
-  background-color: #f3ead1;
-  border-radius: 0.5rem;
-  width: 50%;
-  height: 2.5rem;
-  margin-left: auto;
-  margin-right: auto;
-  @include tablet {
+    background-color: #f3ead1;
+    border-radius: 0.5rem;
     width: 100%;
-    margin: 0;
+    height: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    @include tablet {
+      margin: 0;
+    }
+  :hover {
+    background-color: #f4991a;  
   }
-&:hover {
-  background-color: #f4991a;
 }
 }
+
+.filter-result {
+  margin: 3rem 0rem;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
 }
 

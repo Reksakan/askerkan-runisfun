@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const listOfShoes = require('./Data/dataShoesList.json');
+const listOfShoesVariances = require('./Data/dataShoesVariances.json');
 
 router.get('/', (request, response) => {
-  return response.status(200).json(listOfShoes);
+  return response.status(200).json(listOfShoesVariances);
 }); 
 
 module.exports = router; 
